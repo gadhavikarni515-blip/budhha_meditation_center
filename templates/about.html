@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Nirvana Buddha</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-icon">🧘</span>
+                    <span class="logo-text">Nirvana Buddha</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/programs" class="nav-link">Programs</a></li>
+                    <li><a href="/about" class="nav-link active">About Us</a></li>
+                    <li><a href="/blog" class="nav-link">Blog</a></li>
+                    <li><a href="/contact" class="nav-link">Contact</a></li>
+                    {% if session.user_id %}
+                    <li><a href="/logout" class="nav-link">Logout</a></li>
+                    {% else %}
+                    <li><a href="/login" class="nav-link">Login</a></li>
+                    {% endif %}
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>About Us</h1>
+            <p>Discover our mission and vision</p>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-up">
+                    <h2>Our Mission</h2>
+                    <p>We believe every person carries a natural ability to live with peace, clarity, and purpose. Our meditation center is dedicated to nurturing that inner strength — gently, patiently, and with care.</p>
+                    
+                    <p>We guide children, mothers, and adults through simple yet powerful practices that develop focus, emotional balance, and self-awareness. Our sessions are calm, supportive, and practical, helping people apply mindfulness not only during meditation — but in everyday life.</p>
+                    
+                    <p class="mission-highlight">Our mission is to create a safe space where minds relax, hearts heal, and confidence grows.</p>
+                </div>
+
+                <div class="benefits-section">
+                    <h2>Overall Benefits</h2>
+                    <div class="benefits-grid">
+                        <div class="benefit-item" data-aos="fade-up">
+                            <div class="benefit-icon">📚</div>
+                            <h3>Organizing Awareness Programs</h3>
+                            <p>Classes for mental and physical health and well-being</p>
+                        </div>
+                        <div class="benefit-item" data-aos="fade-up" data-aos-delay="100">
+                            <div class="benefit-icon">🎯</div>
+                            <h3>Increased Concentration</h3>
+                            <p>Reducing stress and improving focus</p>
+                        </div>
+                        <div class="benefit-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="benefit-icon">💪</div>
+                            <h3>Physical Confidence</h3>
+                            <p>Self-esteem increase and flexibility</p>
+                        </div>
+                        <div class="benefit-item" data-aos="fade-up" data-aos-delay="300">
+                            <div class="benefit-icon">🤝</div>
+                            <h3>Reduced Loneliness</h3>
+                            <p>Building connections and community</p>
+                        </div>
+                        <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
+                            <div class="benefit-icon">✨</div>
+                            <h3>Freedom from Stress</h3>
+                            <p>Relief from anxiety and depression</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instructor-section">
+                    <div class="instructor-content">
+                        <div class="instructor-info">
+                            <h2>Swami Chaitanya Sikhar</h2>
+                            <p class="instructor-tagline">A dedicated meditation guide with years of practical experience, helping people develop calmness, awareness, and inner strength.</p>
+                            <div class="instructor-details">
+                                <p>• Began his meditation journey in 2010</p>
+                                <p>• Deeply inspired by the teachings of Osho</p>
+                                <p>• Known for simple, practical, and transformative meditation techniques</p>
+                            </div>
+                            <blockquote>"Meditation is not escape — it is a way of living with clarity and peace."</blockquote>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="practices-section">
+                    <h2>Meditations & Practices Conducted</h2>
+                    <div class="practices-list">
+                        <div class="practice-item">• 7-Chakra Healing Meditation (Sibir / Workshop)</div>
+                        <div class="practice-item">• Vipassana Meditation</div>
+                        <div class="practice-item">• Osho Active Meditations</div>
+                        <div class="practice-item">• Guided Relaxation and Awareness practices</div>
+                    </div>
+                    <p class="practices-note">These sessions are designed to help participants reduce stress and anxiety, improve focus and emotional balance, and develop intuition and inner peace.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Nirvana Buddha</h3>
+                    <p>Your journey to inner peace and clarity begins here.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/programs">Programs</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>📞 +91 98256 32306</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nirvana Buddha Meditation Center. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

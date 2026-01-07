@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} - Nirvana Buddha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body class="admin-body">
+    {% set current_path = request.path %}
+
+    <div class="admin-sidebar-backdrop" data-admin-sidebar-backdrop></div>
+
+    <div class="admin-shell">
+        <aside class="admin-sidebar" aria-label="Admin navigation">
+            <div class="admin-brand">
+                <div class="mark" aria-hidden="true">🧘</div>
+                <div class="title">
+                    <strong>Nirvana Admin</strong>
+                    <span>Meditation Center</span>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="/admin/dashboard" class="{{ 'active' if current_path.startswith('/admin/dashboard') else '' }}">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M4 11.5L12 4l8 7.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="/admin/programs" class="{{ 'active' if current_path.startswith('/admin/programs') else '' }}">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M8 7h8M8 11h8M8 15h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    Programs
+                </a>
+                <a href="/admin/users" class="{{ 'active' if current_path.startswith('/admin/users') else '' }}">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M16 21v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M9 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M22 21v-1a3.5 3.5 0 0 0-2.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M16.8 3.2a4 4 0 0 1 0 7.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    Users
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="/admin/logout">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M10 17l5-5-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 12H3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M21 3v18a1 1 0 0 1-1 1h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-topbar">
+                <div>
+                    <h1>{% block page_title %}{% endblock %}</h1>
+                    <div class="subtitle">{% block page_subtitle %}Manage your site content and users.{% endblock %}</div>
+                </div>
+
+                <div class="right">
+                    <button class="admin-mobile-toggle" type="button" data-admin-sidebar-toggle aria-label="Open navigation">
+                        <span aria-hidden="true">☰</span> Menu
+                    </button>
+                    {% block topbar_actions %}{% endblock %}
+                </div>
+            </header>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+
+

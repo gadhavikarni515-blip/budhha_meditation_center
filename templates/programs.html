@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs & Events - Nirvana Buddha</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-icon">🧘</span>
+                    <span class="logo-text">Nirvana Buddha</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/programs" class="nav-link active">Programs</a></li>
+                    <li><a href="/about" class="nav-link">About Us</a></li>
+                    <li><a href="/blog" class="nav-link">Blog</a></li>
+                    <li><a href="/contact" class="nav-link">Contact</a></li>
+                    {% if session.user_id %}
+                    <li><a href="/logout" class="nav-link">Logout</a></li>
+                    {% else %}
+                    <li><a href="/login" class="nav-link">Login</a></li>
+                    {% endif %}
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Programs & Events</h1>
+            <p>Join our transformative meditation programs</p>
+        </div>
+    </section>
+
+    <section class="programs-listing">
+        <div class="container">
+            <div class="events-grid">
+                {% if programs %}
+                    {% for program in programs %}
+                    <div class="event-card" data-aos="fade-up">
+                        {% if program.photo %}
+                        <div class="event-image">
+                            <img src="{{ url_for('static', filename=program.photo) }}" alt="{{ program.name }}">
+                        </div>
+                        {% endif %}
+                        <div class="event-content">
+                            <div class="event-badge">{{ program.type.title() }}</div>
+                            {% if program.category %}
+                            <div class="event-category">{{ program.category }}</div>
+                            {% endif %}
+                            <h3>{{ program.name }}</h3>
+                            <div class="event-meta">
+                                <span>📅 {{ program.date.strftime('%B %d, %Y') }}</span>
+                                <span>🕒 {% if program.start_time and program.end_time %}{{ program.start_time.strftime('%I:%M %p') }} - {{ program.end_time.strftime('%I:%M %p') }}{% else %}{{ program.time }}{% endif %}</span>
+                            </div>
+                            <p>{{ program.description }}</p>
+                            <div class="event-status">
+                                <span class="status-badge status-{{ program.status }}">{{ program.status.title() }}</span>
+                            </div>
+                            {% if session.user_id and program.status == 'active' %}
+                            <button class="btn btn-primary register-btn" data-program-id="{{ program.id }}">Register Now</button>
+                            {% elif program.status == 'active' %}
+                            <a href="/login" class="btn btn-primary">Login to Register</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-programs">
+                        <p>No programs available at the moment. Check back soon!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Nirvana Buddha</h3>
+                    <p>Your journey to inner peace and clarity begins here.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/programs">Programs</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>📞 +91 98256 32306</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nirvana Buddha Meditation Center. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

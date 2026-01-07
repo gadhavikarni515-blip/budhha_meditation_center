@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirvana Buddha - Meditation Center</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-icon">🧘</span>
+                    <span class="logo-text">Nirvana Buddha</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#programs" class="nav-link">Programs</a></li>
+                    <li><a href="/about" class="nav-link">About Us</a></li>
+                    <li><a href="/blog" class="nav-link">Blog</a></li>
+                    <li><a href="/contact" class="nav-link">Contact</a></li>
+                    {% if session.user_id %}
+                    <li><a href="/logout" class="nav-link">Logout</a></li>
+                    {% else %}
+                    <li><a href="/login" class="nav-link">Login</a></li>
+                    {% endif %}
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="energy-aura"></div>
+            <div class="energy-aura-secondary"></div>
+            <div class="light-waves"></div>
+            <div class="spiritual-energy"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-glow"></div>
+                <h1 class="hero-title">
+                    <span class="title-line">Find Your Inner</span>
+                    <span class="title-line highlight">Peace & Clarity</span>
+                </h1>
+                <p class="hero-subtitle">Transform confusion into clarity, tension into peace, and fear into confidence</p>
+                <div class="hero-buttons">
+                    <a href="#programs" class="btn btn-primary">Explore Programs</a>
+                    <a href="/contact" class="btn btn-secondary">Get Started</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="programs-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Main Programs</h2>
+                <p class="section-subtitle">Discover the path to inner peace and well-being</p>
+            </div>
+
+            <div class="programs-grid">
+                <!-- Program 1: Child Development -->
+                <div class="program-card" data-aos="fade-up">
+                    <div class="program-icon">👶</div>
+                    <h3 class="program-title">Child — 6th Sense Development</h3>
+                    <p class="program-age">Age 6–14</p>
+                    <p class="program-motive"><strong>Main Motive:</strong> Enhancing focus, intuition, memory & confidence.</p>
+                    <div class="program-details">
+                        <h4>Includes Meditations:</h4>
+                        <ul>
+                            <li>Tratak meditation</li>
+                            <li>Belly breathing</li>
+                            <li>Suggestion meditation</li>
+                            <li>Music therapy</li>
+                        </ul>
+                        <h4>Benefits:</h4>
+                        <ul class="benefits-list">
+                            <li>✨ Enhances intuition and inner awareness</li>
+                            <li>✨ Represents mental clarity and focus</li>
+                            <li>✨ Encourages emotional balance and creativity</li>
+                            <li>✨ Creates a calm, positive, and joyful mood</li>
+                        </ul>
+                    </div>
+                    <div class="program-price">₹999 / month</div>
+                </div>
+
+                <!-- Program 2: Pregnant Women -->
+                <div class="program-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="program-icon">🤰</div>
+                    <h3 class="program-title">Pregnant Women — Garbhasanskar</h3>
+                    <p class="program-motive"><strong>Main Motive:</strong> Peaceful pregnancy, emotional connection & healthy habits, reduce pain.</p>
+                    <div class="program-details">
+                        <h4>Includes Meditations:</h4>
+                        <ul>
+                            <li>Deep meditation</li>
+                            <li>Relaxation meditation</li>
+                            <li>Breath meditation</li>
+                            <li>Music therapy</li>
+                            <li>Visualisation technique</li>
+                            <li>5 indri ahavan</li>
+                        </ul>
+                        <h4>Benefits:</h4>
+                        <ul class="benefits-list">
+                            <li>✨ Deep mother–baby bonding</li>
+                            <li>✨ Emotional safety and positivity</li>
+                            <li>✨ Calmness, love, and nurturing energy</li>
+                            <li>✨ Healthy emotional development</li>
+                            <li>✨ Effectively reduces delivery pain</li>
+                        </ul>
+                    </div>
+                    <div class="program-price">₹999 / month</div>
+                </div>
+
+                <!-- Program 3: Relaxation & Healing -->
+                <div class="program-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="program-icon">🌿</div>
+                    <h3 class="program-title">Relaxation & Healing</h3>
+                    <p class="program-subtitle">Anxiety • Stress • Depression support</p>
+                    <p class="program-motive"><strong>Main Motive:</strong> Guided practices to calm the mind and body.</p>
+                    <div class="program-details">
+                        <h4>Includes Meditations:</h4>
+                        <ul>
+                            <li>Visualisation technique</li>
+                            <li>Deep relaxation</li>
+                            <li>Seven chakra healing</li>
+                            <li>Dark meditation</li>
+                            <li>Music therapy</li>
+                            <li>Belly breathing</li>
+                        </ul>
+                        <h4>Benefits:</h4>
+                        <ul class="benefits-list">
+                            <li>✨ Visually reduces stress and anxiety</li>
+                            <li>✨ Creates a sense of safety and calm</li>
+                            <li>✨ Helps the mind release emotional tension</li>
+                            <li>✨ Supports deep relaxation and mental balance</li>
+                        </ul>
+                    </div>
+                    <div class="program-price">₹499 / month</div>
+                </div>
+
+                <!-- Program 4: Inner Journey -->
+                <div class="program-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="program-icon">🌟</div>
+                    <h3 class="program-title">Inner Journey</h3>
+                    <p class="program-motive"><strong>Main Motive:</strong> Inner journey transforms confusion into clarity, tension into peace, and fear into confidence.</p>
+                    <div class="program-details">
+                        <h4>Includes Meditations:</h4>
+                        <ul>
+                            <li>Yog and tantra</li>
+                            <li>Deep meditation</li>
+                            <li>Vipassana meditation</li>
+                            <li>6th sense develop</li>
+                            <li>7 chakra healing</li>
+                        </ul>
+                        <h4>Benefits:</h4>
+                        <ul class="benefits-list">
+                            <li>✨ Calm mind — peaceful heart</li>
+                            <li>✨ Sharp focus — clear decisions</li>
+                            <li>✨ Balanced emotions — less stress</li>
+                            <li>✨ Strong intuition — inner confidence</li>
+                            <li>✨ Healthy body — energized life</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose Us</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h3>Trained & Experienced Teachers</h3>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Simple Techniques</h3>
+                    <p>Anyone can follow</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Safe Environment</h3>
+                    <p>Non-judgmental space</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">💬</div>
+                    <h3>Personalized Guidance</h3>
+                    <p>When you need it</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">📱</div>
+                    <h3>Online & Offline</h3>
+                    <p>Flexible learning</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-icon">✨</div>
+                    <h3>Real-Life Results</h3>
+                    <p>Practical programs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Programs -->
+    <section class="upcoming-programs">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Upcoming Programs & Events</h2>
+            </div>
+            <div class="events-grid">
+                {% for program in programs %}
+                <div class="event-card" data-aos="fade-up">
+                    {% if program.photo %}
+                    <div class="event-image">
+                        <img src="{{ url_for('static', filename=program.photo) }}" alt="{{ program.name }}">
+                    </div>
+                    {% endif %}
+                    <div class="event-content">
+                        <div class="event-badge">{{ program.type.title() }}</div>
+                        <h3>{{ program.name }}</h3>
+                        <div class="event-meta">
+                            <span>📅 {{ program.date.strftime('%B %d, %Y') }}</span>
+                            <span>🕒 {% if program.start_time and program.end_time %}{{ program.start_time.strftime('%I:%M %p') }} - {{ program.end_time.strftime('%I:%M %p') }}{% else %}{{ program.time }}{% endif %}</span>
+                        </div>
+                        <p>{{ program.description[:150] }}...</p>
+                        {% if session.user_id %}
+                        <button class="btn btn-primary register-btn" data-program-id="{{ program.id }}">Register Now</button>
+                        {% else %}
+                        <a href="/login" class="btn btn-primary">Login to Register</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructor Section -->
+    <section class="instructor-section">
+        <div class="container">
+            <div class="instructor-content">
+                <div class="instructor-image" data-aos="fade-right">
+                    <div class="instructor-aura"></div>
+                </div>
+                <div class="instructor-info" data-aos="fade-left">
+                    <h2>Swami Chaitanya Sikhar</h2>
+                    <p class="instructor-tagline">A dedicated meditation guide with years of practical experience, helping people develop calmness, awareness, and inner strength.</p>
+                    <div class="instructor-details">
+                        <p>• Began his meditation journey in 2010</p>
+                        <p>• Deeply inspired by the teachings of Osho</p>
+                        <p>• Known for simple, practical, and transformative meditation techniques</p>
+                    </div>
+                    <blockquote>"Meditation is not escape — it is a way of living with clarity and peace."</blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="schedule-section">
+        <div class="container">
+            <div class="schedule-card">
+                <h2>🕒 Program Duration & Schedule</h2>
+                <p class="schedule-time">1 hour daily | Monday–Friday</p>
+                <p class="schedule-note">(Saturday & Sunday off)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Nirvana Buddha</h3>
+                    <p>Your journey to inner peace and clarity begins here.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#programs">Programs</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>📞 +91 98256 32306</p>
+                    <p>We're here to support you — reach out to us!</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nirvana Buddha Meditation Center. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

@@ -1,0 +1,98 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Quick overview of programs, users, and activity.{% endblock %}
+
+{% block content %}
+<div class="admin-grid cols-3" style="margin-bottom: 14px;">
+    <div class="admin-card">
+        <div class="card-body">
+            <div class="stat">
+                <div class="label">Total Programs</div>
+                <div class="value">{{ programs|length }}</div>
+                <div class="chip">Live data</div>
+            </div>
+        </div>
+    </div>
+    <div class="admin-card">
+        <div class="card-body">
+            <div class="stat">
+                <div class="label">Total Users</div>
+                <div class="value">{{ users|length }}</div>
+                <div class="chip">Registered</div>
+            </div>
+        </div>
+    </div>
+    <div class="admin-card">
+        <div class="card-body">
+            <div class="stat">
+                <div class="label">Recent Registrations</div>
+                <div class="value">{{ registrations|length }}</div>
+                <div class="chip">Last 10</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-grid cols-2">
+    <section class="admin-card">
+        <div class="card-head">
+            <div>
+                <strong>Recent Contacts</strong>
+                <div class="muted">Latest messages from the contact form</div>
+            </div>
+        </div>
+        <div class="card-body admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>{{ contact.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="admin-card">
+        <div class="card-head">
+            <div>
+                <strong>Recent Registrations</strong>
+                <div class="muted">Latest user signups for programs</div>
+            </div>
+        </div>
+        <div class="card-body admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Program</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in registrations %}
+                    <tr>
+                        <td>{{ reg.user.name }}</td>
+                        <td>{{ reg.program.name }}</td>
+                        <td>{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
