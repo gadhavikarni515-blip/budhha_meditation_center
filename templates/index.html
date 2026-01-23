@@ -5,9 +5,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>Nirvana Buddha – Premium Meditation Center</title>
+    <meta name="description" content="Discover premium meditation programs at Nirvana Buddha Meditation Center. Enhance focus, peace, and inner strength with guided sessions for children, pregnant women, and adults.">
+    <meta name="keywords" content="meditation center, mindfulness, relaxation, stress relief, inner peace, chakra healing, vipassana, garbh sanskar, child meditation, Swami Chaitanya Sikhar">
+    <link rel="canonical" href="{{ url_for('index', _external=True) }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400&family=Inter:400,600&display=swap" rel="stylesheet">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url_for('index', _external=True) }}">
+    <meta property="og:title" content="Nirvana Buddha – Premium Meditation Center">
+    <meta property="og:description" content="Experience premium calm and inner strength with our guided meditation programs for children, pregnant women, and adults.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url_for('index', _external=True) }}">
+    <meta property="twitter:title" content="Nirvana Buddha – Premium Meditation Center">
+    <meta property="twitter:description" content="Experience premium calm and inner strength with our guided meditation programs for children, pregnant women, and adults.">
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Nirvana Buddha Meditation Center",
+            "url": "{{ url_for('index', _external=True) }}",
+            "logo": "{{ url_for('static', filename='images/logo.png', _external=True) }}",
+            "description": "Premium meditation center offering guided sessions for children, pregnant women, and adults to enhance focus, peace, and inner strength.",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+91-98256-32306",
+                "contactType": "customer service"
+            },
+            "sameAs": [
+                "https://www.facebook.com/yourpage",
+                "https://www.instagram.com/yourpage"
+            ]
+        }
+    </script>
 </head>
 
 <body>

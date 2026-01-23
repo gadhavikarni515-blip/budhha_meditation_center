@@ -4,9 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programs & Events - Nirvana Buddha</title>
+    <title>Programs & Events - Nirvana Buddha Meditation Center</title>
+    <meta name="description" content="Explore our meditation programs and events at Nirvana Buddha. Join sessions for children, pregnant women, relaxation, and inner journey to enhance peace and strength.">
+    <meta name="keywords" content="meditation programs, meditation events, child meditation, garbh sanskar, relaxation meditation, inner journey, chakra healing">
+    <link rel="canonical" href="{{ url_for('programs', _external=True) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url_for('programs', _external=True) }}">
+    <meta property="og:title" content="Programs & Events - Nirvana Buddha Meditation Center">
+    <meta property="og:description" content="Join our transformative meditation programs for children, pregnant women, and adults.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url_for('programs', _external=True) }}">
+    <meta property="twitter:title" content="Programs & Events - Nirvana Buddha Meditation Center">
+    <meta property="twitter:description" content="Join our transformative meditation programs for children, pregnant women, and adults.">
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
 </head>
 
 <body>

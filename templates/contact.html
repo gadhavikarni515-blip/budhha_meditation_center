@@ -4,10 +4,27 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Contact Us - Nirvana Buddha</title>
+    <title>Contact Us - Nirvana Buddha Meditation Center</title>
+    <meta name="description" content="Get in touch with Nirvana Buddha Meditation Center. Contact us for meditation programs, sessions, and guidance. Phone: +91 98256 32306">
+    <meta name="keywords" content="contact meditation center, meditation programs, Swami Chaitanya Sikhar, meditation guidance, inner peace">
+    <link rel="canonical" href="{{ url_for('contact', _external=True) }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400&family=Inter:400,600&display=swap" rel="stylesheet">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url_for('contact', _external=True) }}">
+    <meta property="og:title" content="Contact Us - Nirvana Buddha Meditation Center">
+    <meta property="og:description" content="Reach out to us for meditation programs and sessions. We're here to guide you on your journey to inner peace.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url_for('contact', _external=True) }}">
+    <meta property="twitter:title" content="Contact Us - Nirvana Buddha Meditation Center">
+    <meta property="twitter:description" content="Reach out to us for meditation programs and sessions. We're here to guide you on your journey to inner peace.">
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
 </head>
 
 <body>

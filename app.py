@@ -93,6 +93,43 @@ def blog():
     posts = BlogPost.query.order_by(BlogPost.created_at.desc()).all()
     return render_template('blog.html', posts=posts)
 
+@app.route('/sitemap.xml')
+def sitemap():
+    """Generate sitemap.xml"""
+    from urllib.parse import urljoin
+    base_url = request.url_root.rstrip('/')
+    pages = [
+        {'loc': url_for('index', _external=True), 'lastmod': '2024-01-01', 'changefreq': 'weekly', 'priority': '1.0'},
+        {'loc': url_for('about', _external=True), 'lastmod': '2024-01-01', 'changefreq': 'monthly', 'priority': '0.8'},
+        {'loc': url_for('programs', _external=True), 'lastmod': '2024-01-01', 'changefreq': 'weekly', 'priority': '0.9'},
+        {'loc': url_for('contact', _external=True), 'lastmod': '2024-01-01', 'changefreq': 'monthly', 'priority': '0.7'},
+        {'loc': url_for('blog', _external=True), 'lastmod': '2024-01-01', 'changefreq': 'weekly', 'priority': '0.6'},
+    ]
+
+    sitemap_xml = '''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+'''
+    for page in pages:
+        sitemap_xml += f'''  <url>
+    <loc>{page['loc']}</loc>
+    <lastmod>{page['lastmod']}</lastmod>
+    <changefreq>{page['changefreq']}</changefreq>
+    <priority>{page['priority']}</priority>
+  </url>
+'''
+    sitemap_xml += '</urlset>'
+    return sitemap_xml, 200, {'Content-Type': 'application/xml'}
+
+@app.route('/robots.txt')
+def robots():
+    """Serve robots.txt"""
+    robots_txt = f'''User-agent: *
+Allow: /
+
+Sitemap: {url_for('sitemap', _external=True)}
+'''
+    return robots_txt, 200, {'Content-Type': 'text/plain'}
+
 @app.route('/register_program_modal', methods=['POST'])
 def register_program_modal():
     """Handle program registration from modal - simple registration without user account"""

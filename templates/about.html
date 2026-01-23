@@ -1,12 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Nirvana Buddha</title>
+    <title>About Us - Nirvana Buddha Meditation Center</title>
+    <meta name="description" content="Learn about Nirvana Buddha Meditation Center's mission to nurture inner peace and strength through guided meditation for children, pregnant women, and adults. Meet Swami Chaitanya Sikhar.">
+    <meta name="keywords" content="about meditation center, Swami Chaitanya Sikhar, meditation mission, inner peace, mindfulness benefits">
+    <link rel="canonical" href="{{ url_for('about', _external=True) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url_for('about', _external=True) }}">
+    <meta property="og:title" content="About Us - Nirvana Buddha Meditation Center">
+    <meta property="og:description" content="Discover our mission and meet Swami Chaitanya Sikhar, our experienced meditation guide.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url_for('about', _external=True) }}">
+    <meta property="twitter:title" content="About Us - Nirvana Buddha Meditation Center">
+    <meta property="twitter:description" content="Discover our mission and meet Swami Chaitanya Sikhar, our experienced meditation guide.">
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
 </head>
+
 <body>
     <nav class="navbar">
         <div class="container">
@@ -49,9 +68,10 @@
                 <div class="about-text" data-aos="fade-up">
                     <h2>Our Mission</h2>
                     <p>We believe every person carries a natural ability to live with peace, clarity, and purpose. Our meditation center is dedicated to nurturing that inner strength — gently, patiently, and with care.</p>
-                    
-                    <p>We guide children, mothers, and adults through simple yet powerful practices that develop focus, emotional balance, and self-awareness. Our sessions are calm, supportive, and practical, helping people apply mindfulness not only during meditation — but in everyday life.</p>
-                    
+
+                    <p>We guide children, mothers, and adults through simple yet powerful practices that develop focus, emotional balance, and self-awareness. Our sessions are calm, supportive, and practical, helping people apply mindfulness not only during
+                        meditation — but in everyday life.</p>
+
                     <p class="mission-highlight">Our mission is to create a safe space where minds relax, hearts heal, and confidence grows.</p>
                 </div>
 
@@ -144,5 +164,5 @@
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
-</html>
 
+</html>
