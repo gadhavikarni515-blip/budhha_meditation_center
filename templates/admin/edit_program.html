@@ -73,8 +73,8 @@
                 <div class="form-group span-2">
                     <label for="photo">Photo</label>
                     {% if program.photo %}
-                    <div style="margin: 10px 0 12px 0;">
-                        <img src="{{ url_for('static', filename=program.photo) }}" alt="Current photo" style="max-width: 260px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.16);">
+                    <div style="margin: 8px 0 14px 0;">
+                        <img src="{{ url_for('static', filename=program.photo) }}" alt="Current photo" style="max-width: 260px; border-radius: 14px; border: 1px solid rgba(15, 23, 42, 0.12);">
                     </div>
                     {% endif %}
                     <input type="file" id="photo" name="photo" accept="image/*">
@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <div class="admin-actions" style="margin-top: 12px;">
+            <div class="admin-actions" style="margin-top: 20px;">
                 <button type="submit" class="btn btn-primary">Update Program</button>
                 <a href="/admin/programs" class="btn btn-secondary">Cancel</a>
             </div>

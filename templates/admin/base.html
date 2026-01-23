@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Admin{% endblock %} - Nirvana Buddha</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-    {% block head_extra %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}"> {% block head_extra %}{% endblock %}
 </head>
+
 <body class="admin-body">
     {% set current_path = request.path %}
 
@@ -16,8 +18,11 @@
 
     <div class="admin-shell">
         <aside class="admin-sidebar" aria-label="Admin navigation">
+            <button class="admin-sidebar-close" type="button" data-admin-sidebar-close aria-label="Close navigation">×</button>
             <div class="admin-brand">
-                <div class="mark" aria-hidden="true">🧘</div>
+                <div class="mark" aria-hidden="true">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Nirvana Buddha Logo" class="admin-logo-img">
+                </div>
                 <div class="title">
                     <strong>Nirvana Admin</strong>
                     <span>Meditation Center</span>
@@ -28,15 +33,13 @@
                 <a href="/admin/dashboard" class="{{ 'active' if current_path.startswith('/admin/dashboard') else '' }}">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M4 11.5L12 4l8 7.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                    </svg>
-                    Dashboard
+                    </svg> Dashboard
                 </a>
                 <a href="/admin/programs" class="{{ 'active' if current_path.startswith('/admin/programs') else '' }}">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8"/>
                         <path d="M8 7h8M8 11h8M8 15h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg>
-                    Programs
+                    </svg> Programs
                 </a>
                 <a href="/admin/users" class="{{ 'active' if current_path.startswith('/admin/users') else '' }}">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -44,8 +47,27 @@
                         <path d="M9 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.8"/>
                         <path d="M22 21v-1a3.5 3.5 0 0 0-2.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                         <path d="M16.8 3.2a4 4 0 0 1 0 7.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg>
-                    Users
+                    </svg> Users
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="/admin/program-registrations" class="{{ 'active' if current_path.startswith('/admin/program-registrations') else '' }}">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M16 21v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M21 10c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2Z" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M16 14c-1.1 0-2.1.4-2.9 1M22 14c1 .6 1.7 1.6 1.7 2.8v1.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg> Program Registrations
+                </a>
+
+                <a href="/admin/session-registrations" class="{{ 'active' if current_path.startswith('/admin/session-registrations') else '' }}">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M16 21v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M21 10c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2Z" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M16 14c-1.1 0-2.1.4-2.9 1M22 14c1 .6 1.7 1.6 1.7 2.8v1.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg> Session Registrations
                 </a>
 
                 <div class="nav-divider"></div>
@@ -55,8 +77,7 @@
                         <path d="M10 17l5-5-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M15 12H3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                         <path d="M21 3v18a1 1 0 0 1-1 1h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg>
-                    Logout
+                    </svg> Logout
                 </a>
             </nav>
         </aside>
@@ -71,26 +92,18 @@
                 <div class="right">
                     <button class="admin-mobile-toggle" type="button" data-admin-sidebar-toggle aria-label="Open navigation">
                         <span aria-hidden="true">☰</span> Menu
-                    </button>
-                    {% block topbar_actions %}{% endblock %}
+                    </button> {% block topbar_actions %}{% endblock %}
                 </div>
             </header>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            {% block content %}{% endblock %}
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
         </main>
     </div>
 
     <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
+
 </html>
-
-

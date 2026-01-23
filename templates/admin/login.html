@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Nirvana Buddha</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
@@ -12,7 +13,9 @@
     <div class="admin-auth">
         <div class="left">
             <div class="admin-brand" style="max-width: 360px;">
-                <div class="mark" aria-hidden="true">🧘</div>
+                <div class="mark" aria-hidden="true">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Nirvana Buddha Logo" class="admin-logo-img">
+                </div>
                 <div class="title">
                     <strong>Nirvana Admin</strong>
                     <span>Secure access</span>

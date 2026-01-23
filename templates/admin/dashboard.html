@@ -1,10 +1,4 @@
-{% extends "admin/base.html" %}
-
-{% block title %}Dashboard{% endblock %}
-{% block page_title %}Dashboard{% endblock %}
-{% block page_subtitle %}Quick overview of programs, users, and activity.{% endblock %}
-
-{% block content %}
+{% extends "admin/base.html" %} {% block title %}Dashboard{% endblock %} {% block page_title %}Dashboard{% endblock %} {% block page_subtitle %}Quick overview of programs, users, and activity.{% endblock %} {% block content %}
 <div class="admin-grid cols-3" style="margin-bottom: 14px;">
     <div class="admin-card">
         <div class="card-body">
@@ -27,12 +21,76 @@
     <div class="admin-card">
         <div class="card-body">
             <div class="stat">
-                <div class="label">Recent Registrations</div>
-                <div class="value">{{ registrations|length }}</div>
-                <div class="chip">Last 10</div>
+                <div class="label">Program Registrations</div>
+                <div class="value">{{ program_registrations|length }}</div>
+                <div class="chip"><a href="/admin/program-registrations" style="color: #fff; text-decoration: none;">View all</a></div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="admin-grid cols-2">
+    <section class="admin-card">
+        <div class="card-head">
+            <div>
+                <strong>Recent Program Registrations</strong>
+                <div class="muted">Latest program registrations from users</div>
+            </div>
+            <a href="/admin/program-registrations" style="color: #8b6bb6; text-decoration: none; font-size: 14px;">View All →</a>
+        </div>
+        <div class="card-body admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Program</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in program_registrations %}
+                    <tr>
+                        <td data-label="Program">{{ reg.program_name }}</td>
+                        <td data-label="Email">{{ reg.email or 'Not provided' }}</td>
+                        <td data-label="Date">{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="admin-card">
+        <div class="card-head">
+            <div>
+                <strong>Recent Session Registrations</strong>
+                <div class="muted">Latest session registrations from users</div>
+            </div>
+            <a href="/admin/session-registrations" style="color: #8b6bb6; text-decoration: none; font-size: 14px;">View All →</a>
+        </div>
+        <div class="card-body admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Session</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in session_registrations %}
+                    <tr>
+                        <td data-label="Session">{{ reg.session_name }}</td>
+                        <td data-label="Name">{{ reg.name }}</td>
+                        <td data-label="Email">{{ reg.email }}</td>
+                        <td data-label="Date">{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 </div>
 
 <div class="admin-grid cols-2">
@@ -55,9 +113,9 @@
                 <tbody>
                     {% for contact in contacts %}
                     <tr>
-                        <td>{{ contact.name }}</td>
-                        <td>{{ contact.email }}</td>
-                        <td>{{ contact.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td data-label="Name">{{ contact.name }}</td>
+                        <td data-label="Email">{{ contact.email }}</td>
+                        <td data-label="Date">{{ contact.created_at.strftime('%Y-%m-%d') }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -68,7 +126,7 @@
     <section class="admin-card">
         <div class="card-head">
             <div>
-                <strong>Recent Registrations</strong>
+                <strong>Recent User Registrations</strong>
                 <div class="muted">Latest user signups for programs</div>
             </div>
         </div>
@@ -84,9 +142,9 @@
                 <tbody>
                     {% for reg in registrations %}
                     <tr>
-                        <td>{{ reg.user.name }}</td>
-                        <td>{{ reg.program.name }}</td>
-                        <td>{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td data-label="User">{{ reg.user.name }}</td>
+                        <td data-label="Program">{{ reg.program.name }}</td>
+                        <td data-label="Date">{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -95,4 +153,3 @@
     </section>
 </div>
 {% endblock %}
-

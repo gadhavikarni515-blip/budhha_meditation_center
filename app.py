@@ -71,6 +71,23 @@ class Registration(db.Model):
     user = db.relationship('User', backref='registrations')
     program = db.relationship('Program', backref='registrations')
 
+class ProgramRegistration(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    program_name = db.Column(db.String(200), nullable=False)
+    full_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120))
+    phone = db.Column(db.String(20), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class SessionRegistration(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.Integer, db.ForeignKey('program.id'))
+    session_name = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
@@ -82,8 +99,8 @@ class BlogPost(db.Model):
 # Routes
 @app.route('/')
 def index():
-    programs = Program.query.filter_by(status='active').order_by(Program.date.desc()).limit(4).all()
-    return render_template('index.html', programs=programs)
+    sessions = Program.query.filter_by(status='active').order_by(Program.date.desc()).all()
+    return render_template('index.html', sessions=sessions)
 
 @app.route('/programs')
 def programs():
@@ -131,6 +148,143 @@ Message: {message}
 def blog():
     posts = BlogPost.query.order_by(BlogPost.created_at.desc()).all()
     return render_template('blog.html', posts=posts)
+
+@app.route('/register_program_modal', methods=['POST'])
+def register_program_modal():
+    """Handle program registration from modal - simple registration without user account"""
+    program_name = request.form.get('program_name')
+    full_name = request.form.get('full_name')
+    phone = request.form.get('phone')
+    email = request.form.get('email')
+    
+    if not all([program_name, full_name, phone]):
+        return jsonify({'error': 'Program name, full name, and phone are required'}), 400
+    
+    # Create program registration record
+    program_registration = ProgramRegistration(
+        program_name=program_name,
+        full_name=full_name,
+        phone=phone,
+        email=email if email else None
+    )
+    db.session.add(program_registration)
+    db.session.commit()
+    
+    # Send confirmation email if email provided
+    if email:
+        try:
+            confirmation_message = f'''
+            <html>
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                    <div style="max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+                        <h2 style="color: #8b6bb6; margin-bottom: 20px;">🙏 Registration Confirmed!</h2>
+                        <p>Thank you for registering for our program!</p>
+                        
+                        <div style="background-color: #f0e6f6; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            <h3 style="color: #8b6bb6; margin-top: 0;">Program Details:</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li><strong>Program:</strong> {program_name}</li>
+                            </ul>
+                        </div>
+                        
+                        <p style="background-color: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin: 20px 0;">
+                            <strong>Note:</strong> We'll send you program details and schedule information soon.
+                        </p>
+                        
+                        <p>We look forward to seeing you at our meditation center!</p>
+                        
+                        <div style="border-top: 1px solid #ddd; margin-top: 20px; padding-top: 20px;">
+                            <p style="font-size: 14px; color: #666;">Best regards,<br><strong>Nirvana Buddha Meditation Center</strong></p>
+                            <p style="font-size: 12px; color: #999;">📞 +91 98256 32306</p>
+                        </div>
+                    </div>
+                </body>
+            </html>
+            '''
+            
+            msg = Message(
+                subject='Program Registration Confirmed - Nirvana Buddha Meditation Center',
+                recipients=[email],
+                html=confirmation_message
+            )
+            mail.send(msg)
+        except Exception as e:
+            print(f"Email send error: {str(e)}")
+            pass
+    
+    return jsonify({'message': 'Registration successful! Confirmation email has been sent to your email address.'}), 200
+
+@app.route('/register_session_modal', methods=['POST'])
+def register_session_modal():
+    """Handle session registration from modal"""
+    session_id = request.form.get('session_id')
+    session_name = request.form.get('session_name')
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    
+    if not all([session_id, session_name, name, email, phone]):
+        return jsonify({'error': 'All fields are required'}), 400
+    
+    # Create session registration record
+    session_registration = SessionRegistration(
+        session_id=int(session_id),
+        session_name=session_name,
+        name=name,
+        email=email,
+        phone=phone
+    )
+    db.session.add(session_registration)
+    db.session.commit()
+    
+    # Send confirmation email
+    try:
+        # Get session details if available
+        session_obj = Program.query.get(int(session_id))
+        session_time = f"{session_obj.start_time} - {session_obj.end_time}" if session_obj and session_obj.start_time and session_obj.end_time else "See schedule"
+        
+        confirmation_message = f'''
+        <html>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <div style="max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+                    <h2 style="color: #8b6bb6; margin-bottom: 20px;">🙏 Session Registration Confirmed!</h2>
+                    <p>Hi <strong>{name}</strong>,</p>
+                    <p>Thank you for registering for our session!</p>
+                    
+                    <div style="background-color: #f0e6f6; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                        <h3 style="color: #8b6bb6; margin-top: 0;">Session Details:</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>Session:</strong> {session_name}</li>
+                            <li><strong>Time:</strong> {session_time}</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="background-color: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin: 20px 0;">
+                        <strong>Note:</strong> Please arrive 10 minutes early. Bring your yoga mat and water bottle.
+                    </p>
+                    
+                    <p>We look forward to seeing you at our meditation center!</p>
+                    
+                    <div style="border-top: 1px solid #ddd; margin-top: 20px; padding-top: 20px;">
+                        <p style="font-size: 14px; color: #666;">Best regards,<br><strong>Nirvana Buddha Meditation Center</strong></p>
+                        <p style="font-size: 12px; color: #999;">📞 +91 98256 32306</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        '''
+        
+        msg = Message(
+            subject='Session Registration Confirmed - Nirvana Buddha Meditation Center',
+            recipients=[email],
+            html=confirmation_message
+        )
+        mail.send(msg)
+    except Exception as e:
+        print(f"Email send error: {str(e)}")
+        pass
+    
+    return jsonify({'message': 'Session registration successful! Confirmation email has been sent.'}), 200
 
 @app.route('/register/<int:program_id>', methods=['POST'])
 def register_program(program_id):
@@ -206,12 +360,16 @@ def admin_dashboard():
     users = User.query.order_by(User.created_at.desc()).all()
     contacts = Contact.query.order_by(Contact.created_at.desc()).limit(10).all()
     registrations = Registration.query.order_by(Registration.created_at.desc()).limit(10).all()
+    program_registrations = ProgramRegistration.query.order_by(ProgramRegistration.created_at.desc()).limit(10).all()
+    session_registrations = SessionRegistration.query.order_by(SessionRegistration.created_at.desc()).limit(10).all()
     
     return render_template('admin/dashboard.html', 
                          programs=programs, 
                          users=users, 
                          contacts=contacts,
-                         registrations=registrations)
+                         registrations=registrations,
+                         program_registrations=program_registrations,
+                         session_registrations=session_registrations)
 
 @app.route('/admin/programs', methods=['GET', 'POST'])
 def admin_programs():
@@ -345,6 +503,44 @@ def admin_users():
     
     users = User.query.order_by(User.created_at.desc()).all()
     return render_template('admin/users.html', users=users)
+
+@app.route('/admin/program-registrations')
+def admin_program_registrations():
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    
+    # Get all program registrations grouped by program name
+    all_registrations = ProgramRegistration.query.order_by(ProgramRegistration.created_at.desc()).all()
+    
+    # Group by program name
+    registrations_by_program = {}
+    for reg in all_registrations:
+        if reg.program_name not in registrations_by_program:
+            registrations_by_program[reg.program_name] = []
+        registrations_by_program[reg.program_name].append(reg)
+    
+    return render_template('admin/program_registrations.html', 
+                         registrations_by_program=registrations_by_program,
+                         all_registrations=all_registrations)
+
+@app.route('/admin/session-registrations')
+def admin_session_registrations():
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    
+    # Get all session registrations grouped by session name
+    all_registrations = SessionRegistration.query.order_by(SessionRegistration.created_at.desc()).all()
+    
+    # Group by session name
+    registrations_by_session = {}
+    for reg in all_registrations:
+        if reg.session_name not in registrations_by_session:
+            registrations_by_session[reg.session_name] = []
+        registrations_by_session[reg.session_name].append(reg)
+    
+    return render_template('admin/session_registrations.html', 
+                         registrations_by_session=registrations_by_session,
+                         all_registrations=all_registrations)
 
 # User registration/login
 @app.route('/register', methods=['GET', 'POST'])

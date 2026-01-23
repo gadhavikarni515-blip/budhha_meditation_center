@@ -1,10 +1,4 @@
-{% extends "admin/base.html" %}
-
-{% block title %}Users{% endblock %}
-{% block page_title %}Users{% endblock %}
-{% block page_subtitle %}View registered users and admin access.{% endblock %}
-
-{% block content %}
+{% extends "admin/base.html" %} {% block title %}Users{% endblock %} {% block page_title %}Users{% endblock %} {% block page_subtitle %}View registered users and admin access.{% endblock %} {% block content %}
 <section class="admin-card">
     <div class="card-head">
         <div>
@@ -27,12 +21,12 @@
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.phone or 'N/A' }}</td>
-                    <td>{% if user.is_admin %}<span class="status-badge status-active">Yes</span>{% else %}<span class="status-badge">No</span>{% endif %}</td>
-                    <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td data-label="ID">{{ user.id }}</td>
+                    <td data-label="Name">{{ user.name }}</td>
+                    <td data-label="Email">{{ user.email }}</td>
+                    <td data-label="Phone">{{ user.phone or 'N/A' }}</td>
+                    <td data-label="Admin">{% if user.is_admin %}<span class="status-badge status-active">Yes</span>{% else %}<span class="status-badge">No</span>{% endif %}</td>
+                    <td data-label="Registered">{{ user.created_at.strftime('%Y-%m-%d') }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -40,4 +34,3 @@
     </div>
 </section>
 {% endblock %}
-

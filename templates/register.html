@@ -11,7 +11,7 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <span class="logo-icon">🧘</span>
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Nirvana Buddha Logo" class="auth-logo-img">
                 <h2>Register to Nirvana Buddha</h2>
             </div>
             {% with messages = get_flashed_messages(with_categories=true) %}

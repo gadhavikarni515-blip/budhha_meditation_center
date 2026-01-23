@@ -1,323 +1,521 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nirvana Buddha - Meditation Center</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Nirvana Buddha – Premium Meditation Center</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400&family=Inter:400,600&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-wrapper">
-                <div class="logo">
-                    <span class="logo-icon">🧘</span>
-                    <span class="logo-text">Nirvana Buddha</span>
-                </div>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#programs" class="nav-link">Programs</a></li>
-                    <li><a href="/about" class="nav-link">About Us</a></li>
-                    <li><a href="/blog" class="nav-link">Blog</a></li>
-                    <li><a href="/contact" class="nav-link">Contact</a></li>
-                    {% if session.user_id %}
-                    <li><a href="/logout" class="nav-link">Logout</a></li>
-                    {% else %}
-                    <li><a href="/login" class="nav-link">Login</a></li>
-                    {% endif %}
-                </ul>
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
+    <!-- NAVBAR -->
+    <nav class="nb-navbar">
+        <div class="nb-logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Nirvana Buddha Logo" class="nb-logo-img">
+            <span class="nb-logo-text">Nirvana Buddha</span>
+        </div>
+        <!-- Mobile hamburger -->
+        <button class="nb-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nb-mobile-menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        <div class="nb-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#programs">Programs</a>
+            <a href="#sessions">Sessions</a>
+            <a href="#benefits">Benefits</a>
+            <a href="#instructor">Instructor</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <!-- Mobile menu (shown when hamburger toggled) -->
+        <div id="nb-mobile-menu" class="nb-mobile-menu" hidden>
+            <a href="#home">Home</a>
+            <a href="#programs">Programs</a>
+            <a href="#sessions">Sessions</a>
+            <a href="#benefits">Benefits</a>
+            <a href="#instructor">Instructor</a>
+            <a href="#contact">Contact</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background">
-            <div class="energy-aura"></div>
-            <div class="energy-aura-secondary"></div>
-            <div class="light-waves"></div>
-            <div class="spiritual-energy"></div>
-        </div>
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-glow"></div>
-                <h1 class="hero-title">
-                    <span class="title-line">Find Your Inner</span>
-                    <span class="title-line highlight">Peace & Clarity</span>
-                </h1>
-                <p class="hero-subtitle">Transform confusion into clarity, tension into peace, and fear into confidence</p>
-                <div class="hero-buttons">
-                    <a href="#programs" class="btn btn-primary">Explore Programs</a>
-                    <a href="/contact" class="btn btn-secondary">Get Started</a>
-                </div>
+    <!-- HERO -->
+    <section class="nb-hero" id="home">
+        <div class="nb-hero-content">
+            <div class="nb-hero-text-wrapper">
+                <h1 class="nb-hero-title"><span>Experience</span> Premium Calm & Inner Strength</h1>
+                <p class="nb-hero-desc">
+                    Mindful transformation begins here. Guided journeys for every stage—children, mothers, & adults.<br><span class="nb-highlight">Awaken focus, peace, and real happiness.</span>
+                </p>
+                <a href="#programs" class="cta-btn nb-hero-btn">Explore Programs</a>
             </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="mouse"></div>
+            <div class="nb-hero-img">
+                <img class="nb-hero-gif" src="{{ url_for('static', filename='images/hero.gif') }}" alt="Meditation animation" />
+                <div class="nb-energy-aura"></div>
+            </div>
         </div>
     </section>
 
-    <!-- Programs Section -->
-    <section id="programs" class="programs-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Main Programs</h2>
-                <p class="section-subtitle">Discover the path to inner peace and well-being</p>
+    <!-- PROGRAMS -->
+    <section class="nb-section nb-programs" id="programs">
+        <h2 class="nb-section-title">Our Main Programs</h2>
+        <div class="nb-cards-list">
+            <!-- CHILD PROGRAM -->
+            <div class="nb-card nb-glass-card">
+                <div class="nb-card-img">
+                    <img src="{{ url_for('static', filename='images/child_6thsense.jpeg') }}" alt="Child Meditation Image" />
+                </div>
+                <div class="nb-card-content">
+                    <h3>Child – 6th Sense Development <span class="nb-label">Age 6–14</span></h3>
+                    <p class="nb-intro">Enhancing focus, intuition, memory & confidence.</p>
+                    <div class="nb-meditations">
+                        <strong>Includes:</strong> Tratak meditation, belly breathing, suggestion meditation, music therapy.
+                    </div>
+                    <div class="nb-bullets">
+                        <span>✨ Enhances intuition & inner awareness</span>
+                        <span>✨ Mental clarity and focus</span>
+                        <span>✨ Emotional balance and creativity</span>
+                        <span>✨ Calm, positive, and joyful mood</span>
+                    </div>
+                    <div class="nb-fee">₹999 / month</div>
+                    <button class="btn btn-primary register-now-btn" data-program-name="Child – 6th Sense Development" style="width: 100%; margin-top: 15px;">Register Now</button>
+                </div>
             </div>
-
-            <div class="programs-grid">
-                <!-- Program 1: Child Development -->
-                <div class="program-card" data-aos="fade-up">
-                    <div class="program-icon">👶</div>
-                    <h3 class="program-title">Child — 6th Sense Development</h3>
-                    <p class="program-age">Age 6–14</p>
-                    <p class="program-motive"><strong>Main Motive:</strong> Enhancing focus, intuition, memory & confidence.</p>
-                    <div class="program-details">
-                        <h4>Includes Meditations:</h4>
-                        <ul>
-                            <li>Tratak meditation</li>
-                            <li>Belly breathing</li>
-                            <li>Suggestion meditation</li>
-                            <li>Music therapy</li>
-                        </ul>
-                        <h4>Benefits:</h4>
-                        <ul class="benefits-list">
-                            <li>✨ Enhances intuition and inner awareness</li>
-                            <li>✨ Represents mental clarity and focus</li>
-                            <li>✨ Encourages emotional balance and creativity</li>
-                            <li>✨ Creates a calm, positive, and joyful mood</li>
-                        </ul>
-                    </div>
-                    <div class="program-price">₹999 / month</div>
+            <!-- PREGNANT WOMEN -->
+            <div class="nb-card nb-glass-card">
+                <div class="nb-card-img">
+                    <img src="{{ url_for('static', filename='images/garbhasanskar.jpeg') }}" alt="Pregnant Women Meditation" />
                 </div>
-
-                <!-- Program 2: Pregnant Women -->
-                <div class="program-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="program-icon">🤰</div>
-                    <h3 class="program-title">Pregnant Women — Garbhasanskar</h3>
-                    <p class="program-motive"><strong>Main Motive:</strong> Peaceful pregnancy, emotional connection & healthy habits, reduce pain.</p>
-                    <div class="program-details">
-                        <h4>Includes Meditations:</h4>
-                        <ul>
-                            <li>Deep meditation</li>
-                            <li>Relaxation meditation</li>
-                            <li>Breath meditation</li>
-                            <li>Music therapy</li>
-                            <li>Visualisation technique</li>
-                            <li>5 indri ahavan</li>
-                        </ul>
-                        <h4>Benefits:</h4>
-                        <ul class="benefits-list">
-                            <li>✨ Deep mother–baby bonding</li>
-                            <li>✨ Emotional safety and positivity</li>
-                            <li>✨ Calmness, love, and nurturing energy</li>
-                            <li>✨ Healthy emotional development</li>
-                            <li>✨ Effectively reduces delivery pain</li>
-                        </ul>
+                <div class="nb-card-content">
+                    <h3>Pregnant Women — Garbhasanskar</h3>
+                    <p class="nb-intro">Peaceful pregnancy, emotional connection & healthy habits, reduce pain.</p>
+                    <div class="nb-meditations">
+                        <strong>Includes:</strong> Deep meditation, relaxation meditation, breath meditation, music therapy, visualisation technique, 5 indri ahavan.
                     </div>
-                    <div class="program-price">₹999 / month</div>
+                    <div class="nb-bullets">
+                        <span>✨ Deep mother–baby bonding</span>
+                        <span>✨ Emotional safety and positivity</span>
+                        <span>✨ Calmness, love, and nurturing energy</span>
+                        <span>✨ Effectively reduces delivery pain</span>
+                    </div>
+                    <div class="nb-fee">₹999 / month</div>
+                    <button class="btn btn-primary register-now-btn" data-program-name="Pregnant Women — Garbhasanskar" style="width: 100%; margin-top: 15px;">Register Now</button>
                 </div>
-
-                <!-- Program 3: Relaxation & Healing -->
-                <div class="program-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="program-icon">🌿</div>
-                    <h3 class="program-title">Relaxation & Healing</h3>
-                    <p class="program-subtitle">Anxiety • Stress • Depression support</p>
-                    <p class="program-motive"><strong>Main Motive:</strong> Guided practices to calm the mind and body.</p>
-                    <div class="program-details">
-                        <h4>Includes Meditations:</h4>
-                        <ul>
-                            <li>Visualisation technique</li>
-                            <li>Deep relaxation</li>
-                            <li>Seven chakra healing</li>
-                            <li>Dark meditation</li>
-                            <li>Music therapy</li>
-                            <li>Belly breathing</li>
-                        </ul>
-                        <h4>Benefits:</h4>
-                        <ul class="benefits-list">
-                            <li>✨ Visually reduces stress and anxiety</li>
-                            <li>✨ Creates a sense of safety and calm</li>
-                            <li>✨ Helps the mind release emotional tension</li>
-                            <li>✨ Supports deep relaxation and mental balance</li>
-                        </ul>
-                    </div>
-                    <div class="program-price">₹499 / month</div>
+            </div>
+            <!-- RELAXATION -->
+            <div class="nb-card nb-glass-card">
+                <div class="nb-card-img">
+                    <img src="{{ url_for('static', filename='images/relaxation_meditaion.jpeg') }}" alt="Relaxation Healing Meditation" />
                 </div>
-
-                <!-- Program 4: Inner Journey -->
-                <div class="program-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="program-icon">🌟</div>
-                    <h3 class="program-title">Inner Journey</h3>
-                    <p class="program-motive"><strong>Main Motive:</strong> Inner journey transforms confusion into clarity, tension into peace, and fear into confidence.</p>
-                    <div class="program-details">
-                        <h4>Includes Meditations:</h4>
-                        <ul>
-                            <li>Yog and tantra</li>
-                            <li>Deep meditation</li>
-                            <li>Vipassana meditation</li>
-                            <li>6th sense develop</li>
-                            <li>7 chakra healing</li>
-                        </ul>
-                        <h4>Benefits:</h4>
-                        <ul class="benefits-list">
-                            <li>✨ Calm mind — peaceful heart</li>
-                            <li>✨ Sharp focus — clear decisions</li>
-                            <li>✨ Balanced emotions — less stress</li>
-                            <li>✨ Strong intuition — inner confidence</li>
-                            <li>✨ Healthy body — energized life</li>
-                        </ul>
+                <div class="nb-card-content">
+                    <h3>Relaxation & Healing</h3>
+                    <p class="nb-intro">Guided practices to calm the mind and body.</p>
+                    <div class="nb-meditations">
+                        <strong>Includes:</strong> Visualisation technique, deep relaxation, seven chakra healing, dark meditation, music therapy, belly breathing.
                     </div>
+                    <div class="nb-bullets">
+                        <span>✨ Reduces stress and anxiety</span>
+                        <span>✨ Creates sense of safety and calm</span>
+                        <span>✨ Releases emotional tension</span>
+                        <span>✨ Deep relaxation and mental balance</span>
+                    </div>
+                    <div class="nb-fee">₹499 / month</div>
+                    <button class="btn btn-primary register-now-btn" data-program-name="Relaxation & Healing" style="width: 100%; margin-top: 15px;">Register Now</button>
+                </div>
+            </div>
+            <!-- INNER JOURNEY -->
+            <div class="nb-card nb-glass-card">
+                <div class="nb-card-img">
+                    <img src="{{ url_for('static', filename='images/inner_journy.jpeg') }}" alt="Inner Journey Meditation" />
+                </div>
+                <div class="nb-card-content">
+                    <h3>Inner Journey</h3>
+                    <p class="nb-intro">Transforms confusion into clarity, tension into peace, fear into confidence.</p>
+                    <div class="nb-meditations">
+                        <strong>Includes:</strong> Yog and tantra, deep meditation, Vipassana meditation, 6th sense develop, 7 chakra healing.
+                    </div>
+                    <div class="nb-bullets">
+                        <span>✨ Calm mind — peaceful heart</span>
+                        <span>✨ Sharp focus — clear decisions</span>
+                        <span>✨ Balanced emotions — less stress</span>
+                        <span>✨ Strong intuition — inner confidence</span>
+                        <span>✨ Healthy body — energized life</span>
+                    </div>
+                    <div class="nb-fee">₹599 / month</div>
+                    <button class="btn btn-primary register-now-btn" data-program-name="Inner Journey" style="width: 100%; margin-top: 15px;">Register Now</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Why Choose Us Section -->
-    <section class="why-choose-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Why Choose Us</h2>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up">
-                    <div class="feature-icon">👨‍🏫</div>
-                    <h3>Trained & Experienced Teachers</h3>
+    <!-- SESSIONS -->
+    <section class="nb-section nb-sessions" id="sessions">
+        <h2 class="nb-section-title">Our Sessions</h2>
+        {% if sessions %}
+        <div class="nb-sessions-grid">
+            {% for session in sessions %}
+            <div class="nb-session-card">
+                {% if session.photo %}
+                <div class="nb-session-img">
+                    <img src="{{ url_for('static', filename=session.photo) }}" alt="{{ session.name }}" />
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Simple Techniques</h3>
-                    <p>Anyone can follow</p>
+                {% else %}
+                <div class="nb-session-img">
+                    <img src="https://placehold.co/400x300/C2C3F3/3A3A3A?text={{ session.name }}" alt="{{ session.name }}" />
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Safe Environment</h3>
-                    <p>Non-judgmental space</p>
-                </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon">💬</div>
-                    <h3>Personalized Guidance</h3>
-                    <p>When you need it</p>
-                </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-icon">📱</div>
-                    <h3>Online & Offline</h3>
-                    <p>Flexible learning</p>
-                </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="feature-icon">✨</div>
-                    <h3>Real-Life Results</h3>
-                    <p>Practical programs</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Upcoming Programs -->
-    <section class="upcoming-programs">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Upcoming Programs & Events</h2>
-            </div>
-            <div class="events-grid">
-                {% for program in programs %}
-                <div class="event-card" data-aos="fade-up">
-                    {% if program.photo %}
-                    <div class="event-image">
-                        <img src="{{ url_for('static', filename=program.photo) }}" alt="{{ program.name }}">
-                    </div>
-                    {% endif %}
-                    <div class="event-content">
-                        <div class="event-badge">{{ program.type.title() }}</div>
-                        <h3>{{ program.name }}</h3>
-                        <div class="event-meta">
-                            <span>📅 {{ program.date.strftime('%B %d, %Y') }}</span>
-                            <span>🕒 {% if program.start_time and program.end_time %}{{ program.start_time.strftime('%I:%M %p') }} - {{ program.end_time.strftime('%I:%M %p') }}{% else %}{{ program.time }}{% endif %}</span>
+                {% endif %}
+                <div class="nb-session-content">
+                    <div class="nb-session-category">{{ session.category or 'General' }}</div>
+                    <h3 class="nb-session-name">{{ session.name }}</h3>
+                    <p class="nb-session-description">{{ session.description[:150] }}{% if session.description|length > 150 %}...{% endif %}</p>
+                    <div class="nb-session-details">
+                        <div class="nb-session-date">
+                            <span class="nb-detail-icon">📅</span> {{ session.date.strftime('%B %d, %Y') }}
                         </div>
-                        <p>{{ program.description[:150] }}...</p>
-                        {% if session.user_id %}
-                        <button class="btn btn-primary register-btn" data-program-id="{{ program.id }}">Register Now</button>
-                        {% else %}
-                        <a href="/login" class="btn btn-primary">Login to Register</a>
-                        {% endif %}
+                        <div class="nb-session-time">
+                            <span class="nb-detail-icon">🕐</span> {% if session.start_time and session.end_time %} {{ session.start_time.strftime('%I:%M %p') }} - {{ session.end_time.strftime('%I:%M %p') }} {% else %} {{ session.time }} {% endif %}
+                        </div>
+                        <div class="nb-session-type">
+                            <span class="nb-detail-icon">📍</span> {{ session.type.title() }}
+                        </div>
+                    </div>
+                    <button class="btn btn-primary register-session-btn" data-session-id="{{ session.id }}" data-session-name="{{ session.name }}" style="width: 100%; margin-top: 15px;">Register Now</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="nb-no-sessions">
+            <p>No active sessions available at the moment. Please check back later.</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="nb-section nb-why-choose">
+        <h2 class="nb-section-title">Why Choose Us</h2>
+        <div class="nb-features-grid">
+            <div class="nb-feature-card">
+                <div class="nb-feature-icon">👨‍🏫</div>
+                <h4>Trained & Experienced Teachers</h4>
+            </div>
+            <div class="nb-feature-card">
+                <div class="nb-feature-icon">🎯</div>
+                <h4>Simple Techniques</h4>
+                <p>Anyone can follow</p>
+            </div>
+            <div class="nb-feature-card">
+                <div class="nb-feature-icon">🛡️</div>
+                <h4>Safe Environment</h4>
+                <p>Non-judgmental space</p>
+            </div>
+            <div class="nb-feature-card">
+                <div class="nb-feature-icon">💬</div>
+                <h4>Personalized Guidance</h4>
+                <p>When you need it</p>
+            </div>
+            <div class="nb-feature-card">
+                <div class="nb-feature-icon">📱</div>
+                <h4>Online & Offline</h4>
+                <p>Flexible learning</p>
+            </div>
+            <div class="nb-feature-card">
+                <div class="nb-feature-icon">✨</div>
+                <h4>Real-Life Results</h4>
+                <p>Practical programs</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="nb-section nb-benefits" id="benefits">
+        <h2 class="nb-section-title">Overall Benefits</h2>
+        <div class="nb-benefits-cardlist">
+            <div class="nb-benefit-card">
+                <div class="benefit-title">Awareness Programs</div>
+                <div class="benefit-desc">Organizing awareness programs and classes for mental and physical health and well-being.</div>
+            </div>
+            <div class="nb-benefit-card">
+                <div class="benefit-title">Greater Focus</div>
+                <div class="benefit-desc">Increasing concentration and reducing stress.</div>
+            </div>
+            <div class="nb-benefit-card">
+                <div class="benefit-title">Confidence & Esteem</div>
+                <div class="benefit-desc">Physical confidence and self-esteem increase. Maintaining flexibility and reducing loneliness.</div>
+            </div>
+            <div class="nb-benefit-card">
+                <div class="benefit-title">Emotional Wellness</div>
+                <div class="benefit-desc">Freedom from stress, anxiety, and depression.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDER: REVIEWS -->
+    <section class="nb-section nb-testimonials" id="testimonials">
+        <h2 class="nb-section-title">What People Say</h2>
+        <div class="nb-testimonials-container">
+            <div class="nb-slider-wrapper">
+                <button class="nb-slide-arrow nb-arrow-prev" id="prevRev" aria-label="Previous review">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+                <div class="nb-slide-track" id="nb-slide-track">
+                    <div class="nb-review-card slide-active">
+                        <div class="nb-quote-icon">"</div>
+                        <blockquote class="nb-review-quote">"Truly life-changing experience. The calmness and focus I've discovered here is priceless! My child's growth in focus and creativity has been amazing."</blockquote>
+                        <div class="nb-rating-stars">
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                        </div>
+                        <div class="nb-reviewer-info">
+                            <div class="nb-reviewer-name">Priya S.</div>
+                            <div class="nb-reviewer-role">IT Professional</div>
+                        </div>
+                    </div>
+                    <div class="nb-review-card">
+                        <div class="nb-quote-icon">"</div>
+                        <blockquote class="nb-review-quote">"Felt more connected as a mom, and my child's growth is amazing. Such deep, gentle guidance. The pregnancy program helped me stay calm throughout."</blockquote>
+                        <div class="nb-rating-stars">
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                        </div>
+                        <div class="nb-reviewer-info">
+                            <div class="nb-reviewer-name">Sheetal M.</div>
+                            <div class="nb-reviewer-role">Teacher</div>
+                        </div>
+                    </div>
+                    <div class="nb-review-card">
+                        <div class="nb-quote-icon">"</div>
+                        <blockquote class="nb-review-quote">"Tension and anxiety faded away... I sleep so much better. Beautiful, kind teachers! The relaxation program transformed my daily life."</blockquote>
+                        <div class="nb-rating-stars">
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                        </div>
+                        <div class="nb-reviewer-info">
+                            <div class="nb-reviewer-name">Ravi G.</div>
+                            <div class="nb-reviewer-role">Designer</div>
+                        </div>
+                    </div>
+                    <div class="nb-review-card">
+                        <div class="nb-quote-icon">"</div>
+                        <blockquote class="nb-review-quote">"Transformed my mindset completely. The Inner Journey program gave me clarity I never had. I highly recommend their meditations to all my friends."</blockquote>
+                        <div class="nb-rating-stars">
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                        </div>
+                        <div class="nb-reviewer-info">
+                            <div class="nb-reviewer-name">Sneha V.</div>
+                            <div class="nb-reviewer-role">Architect</div>
+                        </div>
+                    </div>
+                    <div class="nb-review-card">
+                        <div class="nb-quote-icon">"</div>
+                        <blockquote class="nb-review-quote">"Great vibes, gentle healing, and very professional. The 7-chakra healing sessions are incredible. Much love & gratitude!"</blockquote>
+                        <div class="nb-rating-stars">
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                            <span class="nb-star">★</span>
+                        </div>
+                        <div class="nb-reviewer-info">
+                            <div class="nb-reviewer-name">Mohan K.</div>
+                            <div class="nb-reviewer-role">Entrepreneur</div>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
+                <button class="nb-slide-arrow nb-arrow-next" id="nextRev" aria-label="Next review">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+            </div>
+            <div class="nb-slider-dots">
+                <span class="nb-dot active" data-slide="0"></span>
+                <span class="nb-dot" data-slide="1"></span>
+                <span class="nb-dot" data-slide="2"></span>
+                <span class="nb-dot" data-slide="3"></span>
+                <span class="nb-dot" data-slide="4"></span>
             </div>
         </div>
     </section>
 
-    <!-- Instructor Section -->
-    <section class="instructor-section">
-        <div class="container">
-            <div class="instructor-content">
-                <div class="instructor-image" data-aos="fade-right">
-                    <div class="instructor-aura"></div>
-                </div>
-                <div class="instructor-info" data-aos="fade-left">
-                    <h2>Swami Chaitanya Sikhar</h2>
-                    <p class="instructor-tagline">A dedicated meditation guide with years of practical experience, helping people develop calmness, awareness, and inner strength.</p>
-                    <div class="instructor-details">
-                        <p>• Began his meditation journey in 2010</p>
-                        <p>• Deeply inspired by the teachings of Osho</p>
-                        <p>• Known for simple, practical, and transformative meditation techniques</p>
-                    </div>
-                    <blockquote>"Meditation is not escape — it is a way of living with clarity and peace."</blockquote>
-                </div>
+    <!-- INSTRUCTOR -->
+    <section class="nb-section nb-instructor" id="instructor">
+        <div class="nb-instructor-row">
+            <div class="nb-instructor-photo">
+                <img src="{{ url_for('static', filename='images/teacher_image.jpeg') }}" alt="Swami Chaitanya Sikhar">
             </div>
-        </div>
-    </section>
-
-    <!-- Schedule Section -->
-    <section class="schedule-section">
-        <div class="container">
-            <div class="schedule-card">
-                <h2>🕒 Program Duration & Schedule</h2>
-                <p class="schedule-time">1 hour daily | Monday–Friday</p>
-                <p class="schedule-note">(Saturday & Sunday off)</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Nirvana Buddha</h3>
-                    <p>Your journey to inner peace and clarity begins here.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
+            <div class="nb-instructor-info">
+                <h3 class="nb-section-title" style="text-align:left;margin-bottom:1em;">Meet Your Instructor</h3>
+                <div class="nb-instructor-head">Swami Chaitanya Sikhar</div>
+                <p class="nb-instructor-tagline">"A dedicated meditation guide with years of practical experience, helping people develop calmness, awareness, and inner strength."</p>
+                <ul class="nb-instructor-details">
+                    <li>• Began his meditation journey in 2010</li>
+                    <li>• Deeply inspired by the teachings of Osho</li>
+                    <li>• Known for simple, practical, and transformative meditation techniques</li>
+                </ul>
+                <div class="nb-instructor-quote">"Meditation is not escape — it is a way of living with clarity and peace."</div>
+                <div class="nb-practices">
+                    <strong>Meditations & Practices Conducted:</strong>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#programs">Programs</a></li>
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="/contact">Contact</a></li>
+                        <li>7-Chakra Healing Meditation (Sibir / Workshop)</li>
+                        <li>Vipassana Meditation</li>
+                        <li>Osho Active Meditations</li>
+                        <li>Guided Relaxation and Awareness practices</li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>📞 +91 98256 32306</p>
-                    <p>We're here to support you — reach out to us!</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Nirvana Buddha Meditation Center. All rights reserved.</p>
             </div>
         </div>
+    </section>
+
+    <!-- SCHEDULE & FEES -->
+    <section class="nb-section nb-schedule">
+        <div class="nb-schedule-card">
+            <h3>🕒 Program Duration & Schedule</h3>
+            <p class="nb-schedule-time">1 hour daily | Monday–Friday</p>
+            <p class="nb-schedule-note">(Saturday & Sunday off)</p>
+        </div>
+        <div class="nb-fees-card">
+            <h3>💫 Monthly Fee Structure</h3>
+            <ul class="nb-fees-list">
+                <li>Child — Sixth Sense Development: <strong>₹999 / month</strong></li>
+                <li>Pregnant Women — Garbhasanskar: <strong>₹999 / month</strong></li>
+                <li>Relaxation & Stress Relief: <strong>₹499 / month</strong></li>
+                <li>Inner Journey: <strong>₹599 / month</strong></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ABOUT US -->
+    <section class="nb-section nb-about">
+        <h2 class="nb-section-title">About Us</h2>
+        <div class="nb-about-content">
+            <p>We believe every person carries a natural ability to live with peace, clarity, and purpose. Our meditation center is dedicated to nurturing that inner strength — gently, patiently, and with care.</p>
+            <p>We guide children, mothers, and adults through simple yet powerful practices that develop focus, emotional balance, and self-awareness. Our sessions are calm, supportive, and practical, helping people apply mindfulness not only during meditation
+                — but in everyday life.</p>
+            <p class="nb-mission">Our mission is to create a safe space where minds relax, hearts heal, and confidence grows.</p>
+        </div>
+    </section>
+
+    <!-- CTA / CONTACT -->
+    <section class="nb-section nb-contact" id="contact">
+        <h2 class="nb-section-title">Ready to Begin?</h2>
+        <div class="nb-contact-row">
+            <div class="nb-contact-info">
+                <div class="nb-contact-phone"><strong>📞 Contact:</strong> +91 98256 32306</div>
+                <div class="nb-note">We're here to guide you – reach out and we'll gladly help you find the program that feels right for you.</div>
+            </div>
+            <a class="cta-btn" href="/contact">Send Us a Message</a>
+        </div>
+    </section>
+
+    <!-- Register Program Modal -->
+    <div id="registerProgramModal" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <button class="close-modal" id="closeRegisterModal">&times;</button>
+            <h2 style="margin-bottom:12px">Register for Program</h2>
+            <p id="modalProgramName" style="color: #666; margin-bottom: 20px;"></p>
+            <form id="registerProgramForm" class="form">
+                <input type="hidden" id="register-program-name" name="program_name" />
+                <div class="form-group">
+                    <label for="register-fullname">Full Name <span style="color: red;">*</span></label>
+                    <input type="text" id="register-fullname" name="full_name" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-phone">Phone Number <span style="color: red;">*</span></label>
+                    <input type="tel" id="register-phone" name="phone" placeholder="Your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email Address (Optional)</label>
+                    <input type="email" id="register-email" name="email" placeholder="your.email@example.com">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register Now</button>
+            </form>
+            <div id="registerSuccess" style="display:none; background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 4px; margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <!-- Session Registration Modal -->
+    <div id="registerSessionModal" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #6b3d7d;">Register for Session</h2>
+                <button type="button" class="modal-close" style="background: none; border: none; font-size: 28px; color: #999; cursor: pointer;">&times;</button>
+            </div>
+            <form id="sessionRegistrationForm">
+                <input type="hidden" id="sessionId" name="session_id" value="">
+                <input type="hidden" id="sessionName" name="session_name" value="">
+
+                <div style="margin-bottom: 15px;">
+                    <label for="sessionName" style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">Session Name</label>
+                    <input type="text" id="displaySessionName" readonly style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background-color: #f5f5f5;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="sessionUserName" style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">Name <span style="color: red;">*</span></label>
+                    <input type="text" id="sessionUserName" name="name" placeholder="Your full name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="sessionEmail" style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">Email <span style="color: red;">*</span></label>
+                    <input type="email" id="sessionEmail" name="email" placeholder="your.email@example.com" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="sessionPhone" style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">Phone <span style="color: red;">*</span></label>
+                    <input type="tel" id="sessionPhone" name="phone" placeholder="Your phone number" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Register Now</button>
+            </form>
+            <div id="sessionRegisterSuccess" style="display:none; background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 4px; margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <footer class="nb-footer">
+        <div class="nb-footer-content">
+            <div class="nb-footer-section">
+                <div class="nb-footer-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Nirvana Buddha Logo" class="nb-footer-logo-img">
+                </div>
+                <h4>Nirvana Buddha</h4>
+                <p>Your journey to inner peace and clarity begins here.</p>
+            </div>
+            <div class="nb-footer-section">
+                <h4>Quick Links</h4>
+                <a href="#home">Home</a>
+                <a href="#programs">Programs</a>
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact</a>
+            </div>
+            <div class="nb-footer-section">
+                <h4>Contact</h4>
+                <p>📞 +91 98256 32306</p>
+            </div>
+        </div>
+        <div class="nb-footer-bottom">
+            &copy; 2024 Nirvana Buddha Meditation Center. All rights reserved.
+        </div>
     </footer>
-
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hero.js') }}"></script>
 </body>
-</html>
 
+</html>
