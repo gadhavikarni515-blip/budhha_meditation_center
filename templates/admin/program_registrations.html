@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %} {% block title %}Program Registrations{% endblock %} {% block page_title %}Program Registrations{% endblock %} {% block page_subtitle %}View all program registrations from users{% endblock %} {% block content %}
+<div class="admin-card">
+    <div class="card-head">
+        <div>
+            <strong>All Program Registrations</strong>
+            <div class="muted">Total registrations: {{ all_registrations|length }}</div>
+        </div>
+    </div>
+    <div class="card-body admin-table-wrap">
+        {% for program_name, registrations in registrations_by_program.items() %}
+        <div class="registration-group">
+            <h3 class="registration-group-title">
+                {{ program_name }} <span class="registration-count">({{ registrations|length }} registrations)</span>
+            </h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Registration Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in registrations %}
+                    <tr>
+                        <td data-label="Email">{{ reg.email or 'Not provided' }}</td>
+                        <td data-label="Phone">{{ reg.phone or 'Not provided' }}</td>
+                        <td data-label="Registration Date">{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td data-label="Time">{{ reg.created_at.strftime('%H:%M:%S') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %} {% if not registrations_by_program %}
+        <div class="empty-state">
+            <p>No program registrations yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
