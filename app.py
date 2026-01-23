@@ -1,100 +1,44 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
-from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime, time
 import os
 from dotenv import load_dotenv
+from models import db, User, Program, Contact, Registration, ProgramRegistration, SessionRegistration, BlogPost
 
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-change-this')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nirvana_buddha.db'
+
+# Production-ready configuration
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.getenv('SECRET_KEY', 'dev-secret-key'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', os.getenv('DATABASE_URL', 'sqlite:///instance/nirvana_buddha.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # Email configuration
-app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
-app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', '')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', '')
-app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME', '')
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', os.getenv('MAIL_SERVER', 'smtp.gmail.com'))
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', os.getenv('MAIL_PORT', 587)))
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', 'True').lower() == 'true'
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', os.getenv('MAIL_USERNAME', ''))
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD', ''))
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME', os.getenv('MAIL_USERNAME', ''))
 
-db = SQLAlchemy(app)
+# Initialize extensions
+db.init_app(app)
 mail = Mail(app)
 
 # Create upload folder if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'programs'), exist_ok=True)
 
-# Database Models
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    phone = db.Column(db.String(20))
-    password_hash = db.Column(db.String(255))
-    is_admin = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+# Ensure instance folder exists for SQLite
+instance_path = os.path.join(os.path.dirname(__file__), 'instance')
+if not os.path.exists(instance_path):
+    os.makedirs(instance_path)
 
-class Program(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    type = db.Column(db.String(50), nullable=False)  # 'online' or 'offline'
-    time = db.Column(db.String(50), nullable=False)  # Keep for backward compatibility
-    start_time = db.Column(db.Time, nullable=True)
-    end_time = db.Column(db.Time, nullable=True)
-    date = db.Column(db.Date, nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    status = db.Column(db.String(20), default='active')  # 'active', 'completed', 'cancelled'
-    photo = db.Column(db.String(255))
-    category = db.Column(db.String(100))  # Child, Pregnant Women, Relaxation, Inner Journey
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class Contact(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    phone = db.Column(db.String(20))
-    message = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class Registration(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    program_id = db.Column(db.Integer, db.ForeignKey('program.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    user = db.relationship('User', backref='registrations')
-    program = db.relationship('Program', backref='registrations')
-
-class ProgramRegistration(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    program_name = db.Column(db.String(200), nullable=False)
-    full_name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120))
-    phone = db.Column(db.String(20), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class SessionRegistration(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    session_id = db.Column(db.Integer, db.ForeignKey('program.id'))
-    session_name = db.Column(db.String(200), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    phone = db.Column(db.String(20), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class BlogPost(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    image = db.Column(db.String(255))
-    author = db.Column(db.String(100))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 # Routes
 @app.route('/')
@@ -591,18 +535,33 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
+# Production initialization
+def create_tables():
+    """Create database tables"""
     with app.app_context():
         db.create_all()
-        # Create default admin user if not exists
+        print("Database tables created successfully")
+
+def create_admin_user():
+    """Create default admin user if not exists"""
+    with app.app_context():
         if not User.query.filter_by(is_admin=True).first():
             admin = User(
                 name='Admin',
                 email='admin@nirvanabuddha.com',
-                password_hash=generate_password_hash('admin123'),
                 is_admin=True
             )
+            admin.set_password('admin123')
             db.session.add(admin)
             db.session.commit()
+            print("Admin user created successfully")
+
+if __name__ == '__main__':
+    create_tables()
+    create_admin_user()
     app.run(debug=True)
+else:
+    # Production mode - ensure tables exist
+    create_tables()
+    create_admin_user()
 
