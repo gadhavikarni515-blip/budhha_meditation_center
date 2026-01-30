@@ -9,7 +9,15 @@ services:
         value: production
       - key: SECRET_KEY
         generateValue: true
-      - key: DATABASE_URL
-        value: sqlite:////var/tmp/nirvana_buddha.db
       - key: PYTHONPATH
         value: /opt/render/project/src
+  - type: pserv
+    name: nirvana-db
+    runtime: python3
+    envVars:
+      - key: POSTGRES_DB
+        value: nirvana_buddha
+      - key: POSTGRES_USER
+        value: nirvana_user
+      - key: POSTGRES_PASSWORD
+        generateValue: true
