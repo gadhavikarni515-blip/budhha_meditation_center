@@ -10,6 +10,6 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: sqlite:///instance/nirvana_buddha.db
+        value: sqlite:////opt/render/project/src/instance/nirvana_buddha.db
       - key: PYTHONPATH
         value: /opt/render/project/src

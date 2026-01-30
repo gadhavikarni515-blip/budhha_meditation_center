@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # Production-ready configuration
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.getenv('SECRET_KEY', 'dev-secret-key'))
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', os.getenv('DATABASE_URL', 'sqlite:///instance/nirvana_buddha.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f"sqlite:///{os.path.join(os.getcwd(), 'instance', 'nirvana_buddha.db')}")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
@@ -26,6 +26,11 @@ app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', os.getenv('MAIL_US
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD', ''))
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME', os.getenv('MAIL_USERNAME', ''))
 
+# Ensure instance folder exists for SQLite
+instance_path = os.path.join(os.path.dirname(__file__), 'instance')
+if not os.path.exists(instance_path):
+    os.makedirs(instance_path)
+
 # Initialize extensions
 db.init_app(app)
 mail = Mail(app)
@@ -33,11 +38,6 @@ mail = Mail(app)
 # Create upload folder if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'programs'), exist_ok=True)
-
-# Ensure instance folder exists for SQLite
-instance_path = os.path.join(os.path.dirname(__file__), 'instance')
-if not os.path.exists(instance_path):
-    os.makedirs(instance_path)
 
 
 # Routes
