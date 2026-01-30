@@ -4,6 +4,7 @@ services:
     runtime: python3
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --bind 0.0.0.0:$PORT app:app
+    database: nirvana-db
     envVars:
       - key: FLASK_ENV
         value: production
@@ -13,7 +14,6 @@ services:
         value: /opt/render/project/src
   - type: pserv
     name: nirvana-db
-    runtime: python3
     envVars:
       - key: POSTGRES_DB
         value: nirvana_buddha
