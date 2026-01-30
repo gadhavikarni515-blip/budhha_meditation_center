@@ -26,11 +26,6 @@ app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', os.getenv('MAIL_US
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', os.getenv('MAIL_PASSWORD', ''))
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME', os.getenv('MAIL_USERNAME', ''))
 
-# Ensure instance folder exists for SQLite
-instance_path = os.path.join(os.path.dirname(__file__), 'instance')
-if not os.path.exists(instance_path):
-    os.makedirs(instance_path)
-
 # Initialize extensions
 db.init_app(app)
 mail = Mail(app)
