@@ -39,7 +39,7 @@
                     <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8"/>
                         <path d="M8 7h8M8 11h8M8 15h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg> Programs
+                    </svg> Sessions
                 </a>
                 <a href="/admin/users" class="{{ 'active' if current_path.startswith('/admin/users') else '' }}">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -48,6 +48,12 @@
                         <path d="M22 21v-1a3.5 3.5 0 0 0-2.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                         <path d="M16.8 3.2a4 4 0 0 1 0 7.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                     </svg> Users
+                </a>
+
+                <a href="/admin/contacts" class="{{ 'active' if current_path.startswith('/admin/contacts') else '' }}">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8"/>
+                    </svg> Contacts
                 </a>
 
                 <div class="nav-divider"></div>

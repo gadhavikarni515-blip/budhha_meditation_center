@@ -56,13 +56,20 @@ class Program(db.Model):
     description = db.Column(db.Text)
     status = db.Column(db.String(20), default='active')  # active/inactive
     category = db.Column(db.String(100))
-    photo = db.Column(db.String(200))
+    photo = db.Column(db.String(200))  # Kept for backwards compatibility
+    photo_data = db.Column(db.LargeBinary)  # BLOB for image storage
+    photo_filename = db.Column(db.String(200))  # Original filename
+    photo_mime_type = db.Column(db.String(50))  # MIME type (image/jpeg, image/png, etc.)
     start_time = db.Column(db.Time)
     end_time = db.Column(db.Time)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f'<Program {self.name}>'
+
+    def has_image(self):
+        """Check if program has an image stored"""
+        return self.photo_data is not None and len(self.photo_data) > 0
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -81,8 +81,15 @@ Message: {message}
         except:
             pass
         
-        flash('Thank you for your message! We will get back to you soon.', 'success')
-        return redirect(url_for('contact'))
+        # Check if AJAX request
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.is_json:
+            return jsonify({
+                'success': True,
+                'message': 'Thank you for your message! We will get back to you soon.'
+            })
+        else:
+            flash('Thank you for your message! We will get back to you soon.', 'success')
+            return redirect(url_for('contact'))
     
     return render_template('contact.html')
 
@@ -386,18 +393,25 @@ def admin_programs():
         elif not time_str and start_time:
             time_str = start_time.strftime('%I:%M %p')
         
+        # Handle image upload as BLOB
+        photo_data = None
+        photo_filename = None
+        photo_mime_type = None
         photo = None
         if 'photo' in request.files:
             file = request.files['photo']
             if file.filename:
-                filename = secure_filename(file.filename)
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'programs', filename)
-                file.save(filepath)
-                photo = f'uploads/programs/{filename}'
+                # Read file as BLOB
+                photo_data = file.read()
+                photo_filename = secure_filename(file.filename)
+                photo_mime_type = file.content_type or 'image/jpeg'
         
         program = Program(
             name=name, type=type, time=time_str, date=date,
             description=description, status=status, category=category, photo=photo,
+            photo_data=photo_data,
+            photo_filename=photo_filename,
+            photo_mime_type=photo_mime_type,
             start_time=start_time, end_time=end_time
         )
         db.session.add(program)
@@ -450,13 +464,15 @@ def admin_edit_program(id):
         program.start_time = start_time
         program.end_time = end_time
         
+        # Handle image upload as BLOB
         if 'photo' in request.files:
             file = request.files['photo']
             if file.filename:
-                filename = secure_filename(file.filename)
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'programs', filename)
-                file.save(filepath)
-                program.photo = f'uploads/programs/{filename}'
+                # Read file as BLOB
+                program.photo_data = file.read()
+                program.photo_filename = secure_filename(file.filename)
+                program.photo_mime_type = file.content_type or 'image/jpeg'
+                program.photo = None  # Clear old file-based path
         
         db.session.commit()
         flash('Program updated successfully!', 'success')
@@ -569,6 +585,32 @@ def login():
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('index'))
+
+# Image serving route for BLOB images
+@app.route('/program-image/<int:program_id>')
+def serve_program_image(program_id):
+    """Serve program image from database BLOB"""
+    program = Program.query.get_or_404(program_id)
+    
+    if program.photo_data:
+        # Return the BLOB data with MIME type
+        return program.photo_data, 200, {
+            'Content-Type': program.photo_mime_type or 'image/jpeg',
+            'Cache-Control': 'max-age=3600'  # Cache for 1 hour
+        }
+    
+    # Fallback to file-based image if BLOB doesn't exist
+    if program.photo:
+        from flask import send_from_directory
+        import os
+        upload_folder = app.config['UPLOAD_FOLDER']
+        photo_path = os.path.join(upload_folder, program.photo)
+        if os.path.exists(photo_path):
+            return send_from_directory(upload_folder, program.photo)
+    
+    # Return default image
+    from flask import send_from_directory
+    return send_from_directory('static/images', 'logo.png')
 
 # Production initialization
 def create_tables():

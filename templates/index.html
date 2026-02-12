@@ -196,7 +196,11 @@
         <div class="nb-sessions-grid">
             {% for session in sessions %}
             <div class="nb-session-card">
-                {% if session.photo %}
+                {% if session.photo_data %}
+                <div class="nb-session-img">
+                    <img src="{{ url_for('serve_program_image', program_id=session.id) }}" alt="{{ session.name }}" />
+                </div>
+                {% elif session.photo %}
                 <div class="nb-session-img">
                     <img src="{{ url_for('static', filename=session.photo) }}" alt="{{ session.name }}" />
                 </div>

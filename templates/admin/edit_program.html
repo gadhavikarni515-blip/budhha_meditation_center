@@ -1,14 +1,5 @@
-{% extends "admin/base.html" %}
-
-{% block title %}Edit Program{% endblock %}
-{% block page_title %}Edit Program{% endblock %}
-{% block page_subtitle %}Update program details and save changes.{% endblock %}
-
-{% block topbar_actions %}
-<a href="/admin/programs" class="btn btn-secondary">Back to Programs</a>
-{% endblock %}
-
-{% block content %}
+{% extends "admin/base.html" %} {% block title %}Edit Session{% endblock %} {% block page_title %}Edit Session{% endblock %} {% block page_subtitle %}Update session details and save changes.{% endblock %} {% block topbar_actions %}
+<a href="/admin/programs" class="btn btn-secondary">Back to Sessions</a> {% endblock %} {% block content %}
 <section class="admin-card" style="max-width: 980px;">
     <div class="card-head">
         <div>
@@ -20,7 +11,7 @@
         <form method="POST" enctype="multipart/form-data">
             <div class="admin-form-grid">
                 <div class="form-group">
-                    <label for="name">Program Name *</label>
+                    <label for="name">Session Name *</label>
                     <input type="text" id="name" name="name" value="{{ program.name }}" required>
                 </div>
                 <div class="form-group">
@@ -46,15 +37,11 @@
                 </div>
                 <div class="form-group">
                     <label for="start_time">Start Time *</label>
-                    <input type="time" id="start_time" name="start_time"
-                           value="{% if program.start_time %}{{ program.start_time.strftime('%H:%M') }}{% endif %}"
-                           required>
+                    <input type="time" id="start_time" name="start_time" value="{% if program.start_time %}{{ program.start_time.strftime('%H:%M') }}{% endif %}" required>
                 </div>
                 <div class="form-group">
                     <label for="end_time">End Time *</label>
-                    <input type="time" id="end_time" name="end_time"
-                           value="{% if program.end_time %}{{ program.end_time.strftime('%H:%M') }}{% endif %}"
-                           required>
+                    <input type="time" id="end_time" name="end_time" value="{% if program.end_time %}{{ program.end_time.strftime('%H:%M') }}{% endif %}" required>
                 </div>
                 <div class="form-group">
                     <label for="time">Time Display</label>
@@ -71,10 +58,9 @@
                 </div>
 
                 <div class="form-group span-2">
-                    <label for="photo">Photo</label>
-                    {% if program.photo %}
+                    <label for="photo">Photo</label> {% if program.photo or program.photo_data %}
                     <div style="margin: 8px 0 14px 0;">
-                        <img src="{{ url_for('static', filename=program.photo) }}" alt="Current photo" style="max-width: 260px; border-radius: 14px; border: 1px solid rgba(15, 23, 42, 0.12);">
+                        <img src="{{ url_for('serve_program_image', program_id=program.id) if program.photo_data else url_for('static', filename=program.photo) }}" alt="Current photo" style="max-width: 260px; border-radius: 14px; border: 1px solid rgba(15, 23, 42, 0.12);">
                     </div>
                     {% endif %}
                     <input type="file" id="photo" name="photo" accept="image/*">
@@ -88,11 +74,10 @@
             </div>
 
             <div class="admin-actions" style="margin-top: 20px;">
-                <button type="submit" class="btn btn-primary">Update Program</button>
+                <button type="submit" class="btn btn-primary">Update Session</button>
                 <a href="/admin/programs" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
 </section>
 {% endblock %}
-

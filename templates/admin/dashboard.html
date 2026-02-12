@@ -1,9 +1,9 @@
-{% extends "admin/base.html" %} {% block title %}Dashboard{% endblock %} {% block page_title %}Dashboard{% endblock %} {% block page_subtitle %}Quick overview of programs, users, and activity.{% endblock %} {% block content %}
+{% extends "admin/base.html" %} {% block title %}Dashboard{% endblock %} {% block page_title %}Dashboard{% endblock %} {% block page_subtitle %}Quick overview of sessions, users, and activity.{% endblock %} {% block content %}
 <div class="admin-grid cols-3" style="margin-bottom: 14px;">
     <div class="admin-card">
         <div class="card-body">
             <div class="stat">
-                <div class="label">Total Programs</div>
+                <div class="label">Total Sessions</div>
                 <div class="value">{{ programs|length }}</div>
                 <div class="chip">Live data</div>
             </div>
@@ -21,7 +21,7 @@
     <div class="admin-card">
         <div class="card-body">
             <div class="stat">
-                <div class="label">Program Registrations</div>
+                <div class="label">Session Registrations</div>
                 <div class="value">{{ program_registrations|length }}</div>
                 <div class="chip"><a href="/admin/program-registrations" style="color: #fff; text-decoration: none;">View all</a></div>
             </div>
@@ -34,7 +34,7 @@
         <div class="card-head">
             <div>
                 <strong>Recent Program Registrations</strong>
-                <div class="muted">Latest program registrations from users</div>
+                <div class="muted">Latest session registrations from users</div>
             </div>
             <a href="/admin/program-registrations" style="color: #8b6bb6; text-decoration: none; font-size: 14px;">View All →</a>
         </div>
@@ -50,7 +50,7 @@
                 <tbody>
                     {% for reg in program_registrations %}
                     <tr>
-                        <td data-label="Program">{{ reg.program_name }}</td>
+                        <td data-label="Session">{{ reg.program_name }}</td>
                         <td data-label="Email">{{ reg.email or 'Not provided' }}</td>
                         <td data-label="Date">{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
                     </tr>
@@ -127,7 +127,7 @@
         <div class="card-head">
             <div>
                 <strong>Recent User Registrations</strong>
-                <div class="muted">Latest user signups for programs</div>
+                <div class="muted">Latest user signups for sessions</div>
             </div>
         </div>
         <div class="card-body admin-table-wrap">
@@ -135,7 +135,7 @@
                 <thead>
                     <tr>
                         <th>User</th>
-                        <th>Program</th>
+                        <th>Session</th>
                         <th>Date</th>
                     </tr>
                 </thead>
@@ -143,7 +143,7 @@
                     {% for reg in registrations %}
                     <tr>
                         <td data-label="User">{{ reg.user.name }}</td>
-                        <td data-label="Program">{{ reg.program.name }}</td>
+                        <td data-label="Session">{{ reg.program.name }}</td>
                         <td data-label="Date">{{ reg.created_at.strftime('%Y-%m-%d') }}</td>
                     </tr>
                     {% endfor %}

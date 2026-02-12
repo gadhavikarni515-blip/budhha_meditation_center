@@ -25,6 +25,81 @@
     <meta property="twitter:title" content="Contact Us - Nirvana Buddha Meditation Center">
     <meta property="twitter:description" content="Reach out to us for meditation programs and sessions. We're here to guide you on your journey to inner peace.">
     <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
+    <style>
+        /* Toast Notification Styles */
+        
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            min-width: 300px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease-out;
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .toast.error {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+        
+        .toast-icon {
+            font-size: 20px;
+        }
+        
+        .toast-message {
+            flex: 1;
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        .toast-close:hover {
+            opacity: 1;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -100,11 +175,7 @@
                 </div>
 
                 <div class="contact-form-wrapper" data-aos="fade-left">
-                    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %} {% endif %} {% endwith %}
-
-                    <form method="POST" class="contact-form">
+                    <form id="contactForm" class="contact-form">
                         <div class="contact-form-grid">
                             <div class="form-group">
                                 <label for="name">Name *</label>
@@ -123,12 +194,15 @@
                                 <textarea id="message" name="message" rows="5" required></textarea>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Send Message</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <footer class="nb-footer">
         <div class="nb-footer-content">
@@ -156,6 +230,63 @@
         </div>
     </footer>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✓' : '✕'}</span>
+                <span class="toast-message">${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Contact form AJAX submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(this);
+
+            fetch('/contact', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+
+                    if (data.success) {
+                        showToast(data.message, 'success');
+                        this.reset();
+                    } else {
+                        showToast(data.message || 'Something went wrong. Please try again.', 'error');
+                    }
+                })
+                .catch(error => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    showToast('Network error. Please try again.', 'error');
+                });
+        });
+    </script>
 </body>
 
 </html>

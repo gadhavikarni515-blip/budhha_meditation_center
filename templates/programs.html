@@ -70,7 +70,7 @@
                     <div class="event-image">
                         {# Image mapping for main categories (use existing photo if provided) #} {% set category_image_map = { 'Child': 'images/child_6thsense.jpeg', 'Pregnant Women': 'images/garbhasanskar.jpeg', 'Relaxation': 'images/relaxation_meditaion.jpeg', 'Inner Journey':
                         'images/inner_journy.jpeg' } %} {% set image_url = category_image_map.get(program.category, program.photo if program.photo else 'images/default_program.jpeg') %}
-                        <img src="{{ url_for('static', filename=image_url) }}" alt="{{ program.name }}">
+                        <img src="{{ url_for('serve_program_image', program_id=program.id) if program.photo_data else url_for('static', filename=image_url) }}" alt="{{ program.name }}">
                     </div>
                     <div class="event-content">
                         <div class="event-badge">{{ program.type.title() }}</div>
