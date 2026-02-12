@@ -78,11 +78,12 @@ Message: {message}
                 '''
             )
             mail.send(msg)
-        except:
+        except Exception as e:
+            print(f"Email send error: {str(e)}")
             pass
         
         # Check if AJAX request
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.is_json:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return jsonify({
                 'success': True,
                 'message': 'Thank you for your message! We will get back to you soon.'
@@ -498,6 +499,58 @@ def admin_users():
     
     users = User.query.order_by(User.created_at.desc()).all()
     return render_template('admin/users.html', users=users)
+
+@app.route('/admin/contacts')
+def admin_contacts():
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    
+    search_query = request.args.get('search', '')
+    if search_query:
+        contacts = Contact.query.filter(
+            (Contact.name.contains(search_query)) | 
+            (Contact.email.contains(search_query)) |
+            (Contact.message.contains(search_query))
+        ).order_by(Contact.created_at.desc()).all()
+    else:
+        contacts = Contact.query.order_by(Contact.created_at.desc()).all()
+    
+    return render_template('admin/contacts.html', contacts=contacts)
+
+@app.route('/admin/contacts/<int:id>/reply', methods=['POST'])
+def admin_reply_contact(id):
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    
+    contact = Contact.query.get_or_404(id)
+    
+    email = request.form.get('email')
+    subject = request.form.get('subject')
+    message = request.form.get('message')
+    
+    try:
+        msg = Message(
+            subject=subject,
+            recipients=[email],
+            body=message
+        )
+        mail.send(msg)
+        flash(f'Reply sent to {email}', 'success')
+    except Exception as e:
+        flash(f'Failed to send reply: {str(e)}', 'error')
+    
+    return redirect(url_for('admin_contacts'))
+
+@app.route('/admin/contacts/<int:id>/delete', methods=['POST'])
+def admin_delete_contact(id):
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    
+    contact = Contact.query.get_or_404(id)
+    db.session.delete(contact)
+    db.session.commit()
+    flash('Contact message deleted successfully!', 'success')
+    return redirect(url_for('admin_contacts'))
 
 @app.route('/admin/program-registrations')
 def admin_program_registrations():

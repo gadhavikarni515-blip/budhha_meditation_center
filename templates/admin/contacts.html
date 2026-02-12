@@ -55,7 +55,7 @@
                     </td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn btn-sm btn-primary" onclick="showReplyModal({{ contact.id }}, '{{ contact.name|escapejs }}', '{{ contact.email }}')">
+                            <button class="btn btn-sm btn-primary" onclick="showReplyModal({{ contact.id }}, {{ contact.name|tojson }}, {{ contact.email|tojson }})">
                                 Reply
                             </button>
                             <form method="POST" action="/admin/contacts/{{ contact.id }}/delete" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this message?');">
