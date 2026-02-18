@@ -39,7 +39,7 @@ os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'programs'), exist_ok=True
 
 
 def migrate_database():
-    """Run database migrations to add missing columns - works for both SQLite and PostgreSQL"""
+    """Run database migrations to add missing columns and tables - works for both SQLite and PostgreSQL"""
     with app.app_context():
         try:
             database_url = app.config.get('SQLALCHEMY_DATABASE_URI', '')
@@ -62,6 +62,28 @@ def migrate_database():
                     """))
                     db.session.commit()
                     print("Migration completed: Added photo columns")
+                
+                # Check if session_registration table exists
+                result = db.session.execute(db.text("""
+                    SELECT table_name FROM information_schema.tables 
+                    WHERE table_name = 'session_registration'
+                """))
+                if not result.fetchone():
+                    print("Creating session_registration table (PostgreSQL)...")
+                    db.session.execute(db.text("""
+                        CREATE TABLE session_registration (
+                            id SERIAL PRIMARY KEY,
+                            session_id INTEGER NOT NULL,
+                            session_name VARCHAR(200) NOT NULL,
+                            name VARCHAR(150) NOT NULL,
+                            email VARCHAR(150) NOT NULL,
+                            phone VARCHAR(20) NOT NULL,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        )
+                    """))
+                    db.session.commit()
+                    print("Migration completed: Created session_registration table")
+                    
             elif is_sqlite:
                 # SQLite: Check pragma_table_info
                 result = db.session.execute(db.text("""
@@ -74,6 +96,26 @@ def migrate_database():
                     db.session.execute(db.text("ALTER TABLE program ADD COLUMN photo_mime_type VARCHAR(50)"))
                     db.session.commit()
                     print("Migration completed: Added photo columns")
+                
+                # Check if session_registration table exists
+                result = db.session.execute(db.text("""
+                    SELECT name FROM sqlite_master WHERE type='table' AND name='session_registration'
+                """))
+                if not result.fetchone():
+                    print("Creating session_registration table (SQLite)...")
+                    db.session.execute(db.text("""
+                        CREATE TABLE session_registration (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            session_id INTEGER NOT NULL,
+                            session_name VARCHAR(200) NOT NULL,
+                            name VARCHAR(150) NOT NULL,
+                            email VARCHAR(150) NOT NULL,
+                            phone VARCHAR(20) NOT NULL,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        )
+                    """))
+                    db.session.commit()
+                    print("Migration completed: Created session_registration table")
         except Exception as e:
             print(f"Migration check error: {e}")
             db.session.rollback()
@@ -251,25 +293,35 @@ def register_program_modal():
 @app.route('/register_session_modal', methods=['POST'])
 def register_session_modal():
     """Handle session registration from modal"""
-    session_id = request.form.get('session_id')
-    session_name = request.form.get('session_name')
-    name = request.form.get('name')
-    email = request.form.get('email')
-    phone = request.form.get('phone')
-    
-    if not all([session_id, session_name, name, email, phone]):
-        return jsonify({'error': 'All fields are required'}), 400
-    
-    # Create session registration record
-    session_registration = SessionRegistration(
-        session_id=int(session_id),
-        session_name=session_name,
-        name=name,
-        email=email,
-        phone=phone
-    )
-    db.session.add(session_registration)
-    db.session.commit()
+    try:
+        session_id = request.form.get('session_id')
+        session_name = request.form.get('session_name')
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        
+        print(f"Session registration request: session_id={session_id}, session_name={session_name}, name={name}, email={email}, phone={phone}")
+        
+        if not all([session_id, session_name, name, email, phone]):
+            return jsonify({'error': 'All fields are required'}), 400
+        
+        # Create session registration record
+        session_registration = SessionRegistration(
+            session_id=int(session_id),
+            session_name=session_name,
+            name=name,
+            email=email,
+            phone=phone
+        )
+        db.session.add(session_registration)
+        db.session.commit()
+        print(f"Session registration saved successfully: {session_registration.id}")
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error saving session registration: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Registration failed: {str(e)}'}), 500
     
     # Send confirmation email
     try:
