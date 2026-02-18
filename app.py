@@ -39,25 +39,41 @@ os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'programs'), exist_ok=True
 
 
 def migrate_database():
-    """Run database migrations to add missing columns"""
+    """Run database migrations to add missing columns - works for both SQLite and PostgreSQL"""
     with app.app_context():
         try:
-            # Check if photo_data column exists in program table
-            result = db.session.execute(db.text("""
-                SELECT column_name FROM information_schema.columns 
-                WHERE table_name = 'program' AND column_name = 'photo_data'
-            """))
-            if not result.fetchone():
-                print("Adding missing columns to program table...")
-                # Add missing columns for image storage
-                db.session.execute(db.text("""
-                    ALTER TABLE program 
-                    ADD COLUMN IF NOT EXISTS photo_data BYTEA,
-                    ADD COLUMN IF NOT EXISTS photo_filename VARCHAR(200),
-                    ADD COLUMN IF NOT EXISTS photo_mime_type VARCHAR(50)
+            database_url = app.config.get('SQLALCHEMY_DATABASE_URI', '')
+            is_postgres = 'postgresql' in database_url.lower()
+            is_sqlite = 'sqlite' in database_url.lower()
+            
+            if is_postgres:
+                # PostgreSQL: Use information_schema
+                result = db.session.execute(db.text("""
+                    SELECT column_name FROM information_schema.columns 
+                    WHERE table_name = 'program' AND column_name = 'photo_data'
                 """))
-                db.session.commit()
-                print("Migration completed: Added photo_data, photo_filename, photo_mime_type columns")
+                if not result.fetchone():
+                    print("Adding missing columns to program table (PostgreSQL)...")
+                    db.session.execute(db.text("""
+                        ALTER TABLE program 
+                        ADD COLUMN IF NOT EXISTS photo_data BYTEA,
+                        ADD COLUMN IF NOT EXISTS photo_filename VARCHAR(200),
+                        ADD COLUMN IF NOT EXISTS photo_mime_type VARCHAR(50)
+                    """))
+                    db.session.commit()
+                    print("Migration completed: Added photo columns")
+            elif is_sqlite:
+                # SQLite: Check pragma_table_info
+                result = db.session.execute(db.text("""
+                    SELECT name FROM pragma_table_info('program') WHERE name='photo_data'
+                """))
+                if not result.fetchone():
+                    print("Adding missing columns to program table (SQLite)...")
+                    db.session.execute(db.text("ALTER TABLE program ADD COLUMN photo_data BLOB"))
+                    db.session.execute(db.text("ALTER TABLE program ADD COLUMN photo_filename VARCHAR(200)"))
+                    db.session.execute(db.text("ALTER TABLE program ADD COLUMN photo_mime_type VARCHAR(50)"))
+                    db.session.commit()
+                    print("Migration completed: Added photo columns")
         except Exception as e:
             print(f"Migration check error: {e}")
             db.session.rollback()
