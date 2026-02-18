@@ -38,6 +38,37 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'programs'), exist_ok=True)
 
 
+def migrate_database():
+    """Run database migrations to add missing columns"""
+    with app.app_context():
+        try:
+            # Check if photo_data column exists in program table
+            result = db.session.execute(db.text("""
+                SELECT column_name FROM information_schema.columns 
+                WHERE table_name = 'program' AND column_name = 'photo_data'
+            """))
+            if not result.fetchone():
+                print("Adding missing columns to program table...")
+                # Add missing columns for image storage
+                db.session.execute(db.text("""
+                    ALTER TABLE program 
+                    ADD COLUMN IF NOT EXISTS photo_data BYTEA,
+                    ADD COLUMN IF NOT EXISTS photo_filename VARCHAR(200),
+                    ADD COLUMN IF NOT EXISTS photo_mime_type VARCHAR(50)
+                """))
+                db.session.commit()
+                print("Migration completed: Added photo_data, photo_filename, photo_mime_type columns")
+        except Exception as e:
+            print(f"Migration check error: {e}")
+            db.session.rollback()
+
+
+# Run migrations before first request
+with app.app_context():
+    db.create_all()
+    migrate_database()
+
+
 # Routes
 @app.route('/')
 def index():
